@@ -14,3 +14,4 @@
 - No private floorplan, furniture, photo, credential, Vercel setting, or original Git history is included.
 - Caveat: GitHub Pages sibling paths under the same `username.github.io` origin can access origin-wide localStorage; README documents separate-origin/profile use for sensitive plans.
 - Adversarial browser QA passed: imported `<img ... onerror>` text stays escaped, external photo URLs and SVG disguised as PNG are rejected, and captured requests were only localhost/data/blob resources. Current project survives rejected files.
+- GitHub publication: `gh repo create berkshirehathaways/home-layout-lab-public --public --source . --remote origin --push` succeeded. `git ls-remote origin refs/heads/main` returned `7cb5341`; GitHub API reports `PUBLIC` and default branch `main`. A fresh shallow clone reran privacy scan, syntax, and Node 2/2 tests successfully.
