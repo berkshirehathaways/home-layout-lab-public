@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.env.*
+.vercel/
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+tests/artifacts/
+exports/
+uploads/
+*.zip

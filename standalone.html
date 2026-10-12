@@ -1,0 +1,1705 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="도면과 가구를 직접 등록해 배치를 시험하는 브라우저 기반 2D 도구"><title>Home Layout Lab</title><style>
+:root{--ink:#1f2c39;--muted:#687685;--line:#e4e8eb;--bg:#f3f5f6;--accent:#216f79;--warning:#995d16;--red:#b74440}*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.55 -apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans CJK KR','Malgun Gothic',sans-serif;color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:7px;background:white;color:var(--ink);padding:7px 11px;line-height:1.4}button:hover{background:#edf4f4;border-color:#a3c1c4}button:disabled{opacity:.4;cursor:not-allowed}button.primary{background:var(--accent);color:white;border-color:var(--accent)}button.active{background:#e2eeee;border-color:var(--accent);color:#145660}button.danger{color:var(--red)}input,select,textarea{width:100%;border:1px solid #d8dfe3;border-radius:6px;padding:7px 8px;background:white;color:var(--ink);min-width:0}input[type=checkbox]{width:auto;accent-color:var(--accent)}input[type=range]{padding:0}label{display:block;font-size:12px;color:var(--muted);margin:9px 0 4px}h1,h2,h3,p{margin:0}h1{font-size:19px;letter-spacing:-.6px}h2{font-size:15px}h3{font-size:13px}header{height:68px;padding:10px 20px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;gap:12px;align-items:center}.brand-mark{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--accent);color:white;font-weight:800;font-size:14px}.subtitle{font-size:11px;color:var(--muted)}.actions,.row,.toolgroup{display:flex;gap:7px;align-items:center}.actions{flex-wrap:wrap}.top-note{padding:7px 20px;background:#fff8e8;color:#805723;font-size:12px;border-bottom:1px solid #eedfc0;display:flex;justify-content:space-between;gap:12px}.workspace{height:calc(100dvh - 105px);min-height:540px;display:grid;grid-template-columns:246px minmax(350px,1fr) 280px}.sidebar{background:white;overflow-y:auto;padding:15px;border-right:1px solid var(--line)}.inspector{border-left:1px solid var(--line);border-right:none}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.small{font-size:11px;color:var(--muted)}.catalog{display:flex;flex-direction:column;gap:7px;margin-top:12px}.card{display:flex;gap:9px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:9px;cursor:pointer;background:white}.card:hover{border-color:#9bb9bd}.card.selected{border-color:var(--accent);background:#f0f7f7}.card-photo{width:36px;height:36px;flex-shrink:0;border-radius:6px;object-fit:cover;background:#edf0f2;display:grid;place-items:center;font-size:18px}.card-content{min-width:0;flex:1}.card-title{font-size:12px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-detail{font-size:10px;color:var(--muted)}.badge{font-size:10px;border-radius:4px;padding:1px 4px;background:#edf3f3;color:#32646b}.badge.pending{background:#fff2da;color:#8d5a14}.catalog-add{width:100%;margin-top:10px}.help{border-top:1px solid var(--line);padding-top:12px;margin-top:14px;font-size:11px;color:var(--muted)}.canvas-area{display:flex;flex-direction:column;overflow:hidden;position:relative}.toolbar{padding:9px 12px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#f9fafb;border-bottom:1px solid var(--line)}.toolbar button,.toolbar select{font-size:12px;padding:6px 9px}.toolbar select{width:auto}.scene-tabs button{min-width:42px}.canvas-wrap{flex:1;position:relative;min-height:250px;overflow:hidden;background:#eaf0f1}.canvas-wrap svg{display:block;width:100%;height:100%;touch-action:none;user-select:none}.canvas-wrap svg.mode-select,.canvas-wrap svg.mode-pan,.canvas-wrap svg.mode-pan .piece{cursor:grab}.canvas-wrap svg.is-panning,.canvas-wrap svg.is-panning .piece{cursor:grabbing}.canvas-wrap svg.mode-calibrate,.canvas-wrap svg.mode-measure{cursor:crosshair}.piece{cursor:move}.piece.locked{cursor:not-allowed}.canvas-caption{position:absolute;top:13px;left:13px;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:11px;box-shadow:0 2px 8px #182e3e08;pointer-events:none;max-width:400px}.canvas-caption b{display:block;color:var(--ink)}.canvas-status{padding:8px 12px;background:white;border-top:1px solid var(--line);font-size:11px;display:flex;justify-content:space-between;gap:8px}.canvas-settings{padding:7px 12px;background:#f9fafb;border-top:1px solid var(--line);display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:11px}.canvas-settings label{display:flex;align-items:center;gap:4px;margin:0;color:var(--muted)}.canvas-settings input[type=range]{width:70px}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 9px}.field-grid.three{grid-template-columns:repeat(3,1fr)}.inspector-form .row{margin-top:10px;flex-wrap:wrap}.inspector-form .row button{font-size:12px;flex:1}.inspector-form textarea{resize:vertical;min-height:62px;font-size:12px}.info{font-size:11px;color:var(--muted);padding:9px;border-radius:6px;background:#f3f6f7;margin:10px 0}.warning{background:#fff6e6;color:#865b26}.warning-list{margin-top:10px}.warning-row{font-size:11px;padding:8px;margin:6px 0;border-left:3px solid #c48838;background:#fff8ed}.warning-row.hard{border-color:var(--red);background:#fff0ef;color:#873c39}.photo-box{height:130px;width:100%;object-fit:contain;background:#f3f6f7;border-radius:7px;margin-top:10px}.empty{padding:20px 3px;color:var(--muted);font-size:12px}.empty h2{color:var(--ink);margin-bottom:8px}.shortcut{display:inline-block;font-family:monospace;border:1px solid #dce2e5;padding:0 4px;border-radius:4px;margin:2px;color:#52616e}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);max-width:650px;background:#233a43;color:white;box-shadow:0 8px 30px #0002;border-radius:9px;padding:12px 20px;z-index:100;display:none;font-size:13px}.toast.visible{display:block}.focus-mode .workspace{grid-template-columns:1fr}.focus-mode .sidebar{display:none}.measure-label{font-family:sans-serif}dialog{border:1px solid var(--line);border-radius:14px;padding:24px;max-width:520px;color:var(--ink)}dialog::backdrop{background:#0b203957}dialog h2{margin-bottom:12px}dialog p{font-size:13px;margin:8px 0}.source-note{font-size:10px;color:#8b6a38;margin-top:7px}.rule{font-size:11px;color:var(--muted);margin-top:8px}.spacer{flex:1}#save-state{font-size:11px;color:var(--muted)}@media(max-width:1150px){.workspace{grid-template-columns:210px minmax(320px,1fr) 245px}.sidebar{padding:10px}header{padding:8px 12px}.top-note{font-size:10px;padding:6px 12px}.brand .subtitle{display:none}.toolbar{padding:7px}.toolbar button{padding:6px}.actions button{font-size:12px;padding:6px 8px}}@media(max-width:850px){.workspace{grid-template-columns:185px minmax(300px,1fr);height:calc(100dvh - 135px)}.inspector{grid-column:1/-1;height:auto;overflow:visible;border-top:1px solid var(--line)}.workspace{overflow:auto}.sidebar:not(.inspector){max-height:calc(100dvh - 135px)}.canvas-area{min-height:560px}header{height:auto;min-height:90px;flex-wrap:wrap}.top-note{display:block}.top-note span:last-child{display:none}.canvas-caption{max-width:260px}.actions{gap:4px}.focus-mode .workspace{height:calc(100dvh - 135px)}.focus-mode .canvas-area{min-height:500px}}
+
+.canvas-settings label{white-space:nowrap}.canvas-settings select{width:auto;padding:5px 7px;font-size:11px}
+
+.canvas-wrap svg.mode-crosscheck{cursor:crosshair}
+#scale-checks-dialog{width:min(680px,calc(100vw - 32px));max-width:680px;max-height:calc(100dvh - 40px);overflow-y:auto}
+#scale-checks-list{max-height:260px;overflow-y:auto;margin:12px 0}
+.scale-check-row{border:1px solid var(--line);border-radius:8px;padding:10px;margin:8px 0}
+.scale-check-row .row button{margin-left:auto;font-size:11px}
+.scale-check-row p{font-size:12px;overflow-wrap:anywhere}
+#scale-check-form{border-top:1px solid var(--line);margin-top:14px;padding-top:6px}
+#scale-check-save{margin-top:12px}
+#geometry-dialog{width:min(620px,calc(100vw - 32px));max-width:620px;max-height:calc(100dvh - 40px);overflow-y:auto}
+#geometry-list{max-height:210px;overflow-y:auto;margin:12px 0}
+.geometry-row{border:1px solid var(--line);border-radius:8px;padding:9px;margin:8px 0;overflow-wrap:anywhere}
+.geometry-row p{font-size:12px;margin:4px 0}
+#geometry-form{border-top:1px solid var(--line);margin-top:12px;padding-top:8px}
+#geometry-form .row{margin-top:14px}
+#geometry-error{color:var(--red)}
+#doors-dialog{width:min(620px,calc(100vw - 32px));max-width:620px;max-height:calc(100dvh - 40px);overflow-y:auto}
+#doors-list{max-height:180px;overflow-y:auto;margin:12px 0}
+#door-form{border-top:1px solid var(--line);margin-top:12px;padding-top:8px}
+#door-form .row{margin-top:14px}
+#door-error{color:var(--red)}
+#rooms-dialog{width:min(620px,calc(100vw - 32px));max-width:620px;max-height:calc(100dvh - 40px);overflow-y:auto}
+#rooms-list{max-height:210px;overflow-y:auto;margin:12px 0}
+#room-form{border-top:1px solid var(--line);margin-top:12px;padding-top:8px}
+#room-form .row{margin-top:14px}
+#room-error{color:var(--red)}
+.room-source{white-space:pre-line}
+
+#export-options-dialog label{display:block;margin:16px 0;line-height:1.6}
+
+</style></head><body>
+<header><div class="brand"><div class="brand-mark">HL</div><div><h1>Home Layout Lab</h1><div class="subtitle">도면과 가구를 직접 등록해 배치를 시험하세요.</div></div></div><div class="actions"><span id="save-state" role="status">로컬 저장 준비</span><button id="recover-storage" hidden>복구용 원문 저장</button><button id="background-upload">도면 올리기</button><button id="undo" title="Ctrl/Cmd+Z">↶</button><button id="redo" title="Ctrl/Cmd+Shift+Z">↷</button><button id="export-json">배치 파일 저장</button><button id="import-json">불러오기</button><button id="export-options">PNG 출력 옵션</button><button id="export-png" class="primary">도면 PNG</button><button id="help-button">사용법</button></div></header>
+<div class="top-note"><span><b>사용자 입력 기반 2D 도구</b> | 도면·치수·가구는 직접 등록하고 브라우저에 저장합니다.</span><span>등록 벽·설비·문 열림: 입력 기준 검사 | 미등록 대상·반입 동선 미검증</span></div>
+<main class="workspace"><aside class="sidebar"><div class="section-head"><h2>가구 목록</h2><span id="inventory-count" class="small"></span></div><input id="search" type="search" placeholder="가구 이름 검색" aria-label="가구 검색"><select id="room-filter" aria-label="희망 공간 필터" style="margin-top:7px"><option value="">모든 방</option></select><div class="small" style="margin-top:8px">카드를 도면으로 드래그하거나, 선택 후 ‘도면에 놓기’</div><div id="catalog" class="catalog"></div><button class="catalog-add" id="add-item">＋ 가구 추가</button><button class="catalog-add" id="add-zone">＋ 비워둘 공간 표시</button><div class="help"><b>시작 순서</b><br>1. 도면 올리기<br>2. 축척 맞추기<br>3. 가구와 사진 등록<br><br>모든 입력과 사진은 이 브라우저에만 저장됩니다.</div></aside>
+<section class="canvas-area"><div class="toolbar"><div class="toolgroup scene-tabs"><button data-scene="A" class="active">A</button><button data-scene="B">B</button><button data-scene="C">C</button><button id="clone-scene" title="현재 배치를 다른 안으로 복사">안 복사</button></div><div class="toolgroup"><button data-mode="select" class="active">선택</button><button data-mode="pan" title="가구 위에서도 드래그해 전체 도면 이동">화면 이동</button><button data-mode="measure">거리 재기</button><button data-mode="calibrate">축척 맞추기</button><button id="scale-checks-open">축척 비교</button><button id="geometry-open">벽·고정 설비</button><button id="doors-open">문 열림</button><button id="rooms-open">방 경계</button></div><div class="toolgroup"><button id="zoom-out">−</button><button id="fit" title="원본 도면 전체를 화면 가운데 맞추기">전체 맞춤</button><button id="zoom-in">＋</button><button id="focus">크게 보기</button></div></div>
+<div id="onboarding" class="info onboarding"><b>내 도면으로 시작</b><br><span id="background-status">도면 없음 · 이미지를 올려 시작하세요.</span><br><button id="background-empty-upload" type="button" class="primary">도면 올리기</button></div><div class="canvas-wrap" id="canvas-wrap"><svg id="plan" class="mode-select" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="가구를 드래그해 배치하는 평면도"></svg><div class="canvas-caption" id="canvas-caption"><b>A | 시작안</b>도면을 올리고, 가구를 등록해 배치해 보세요.</div></div><div class="canvas-settings"><label><input id="hide-notes" type="checkbox" checked> 방 안 원문 메모 가리기</label><label><input id="show-labels" type="checkbox" checked> 방 이름</label><label><input id="show-clearance" type="checkbox" checked> 사용 여유 공간</label><label>도면 농도 <input id="opacity" type="range" min="20" max="100" value="68"></label><label>격자 <select id="snap"><option value="10">1cm</option><option value="50">5cm</option><option value="100">10cm</option><option value="0">없음</option></select></label></div><div class="canvas-status"><span id="status">준비 중</span><span>R 회전 | 방향키 이동 | Delete 배치 해제</span></div></section>
+<aside class="sidebar inspector"><p class="small">배치 파일 형식 v2 · 집 구조는 A/B/C 공통</p><p id="geometry-status" class="info warning"></p><div id="inspector"></div><div class="help"><h3>현재 안 점검</h3><div id="warnings" class="warning-list"></div><p class="rule">등록한 가구와 검사 활성화된 벽·고정 설비의 본체 겹침 및 앞·뒤·좌·우 사용 여유, 등록한 여닫이문의 회전 영역을 점검합니다. 사용 여유끼리의 겹침은 본체 충돌로 계산하지 않습니다. 미등록·치수 미확인·검사 제외 대상과 미등록 문·미닫이문·창·복도·반입 동선은 미검증입니다. 경고 0도 설치 보증이 아닙니다.</p></div></aside></main>
+<div class="toast" id="toast" role="status"></div><input id="background-file" type="file" accept="image/jpeg,image/png,image/webp" hidden><input id="json-file" type="file" accept=".json,application/json" hidden><input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+<dialog id="export-options-dialog" aria-labelledby="export-options-title">
+<div class="section-head"><h2 id="export-options-title">PNG 출력 옵션</h2><button id="export-options-close" type="button">닫기</button></div>
+<p>‘도면 PNG’는 기본으로 A4 가로 용지에 도면과 아이템 식별 정보만 저장합니다. 이 옵션은 개인 배치 JSON에 저장되지 않습니다.</p>
+<label><input id="export-a4" type="checkbox" checked> A4 도면 중심 출력 (해제하면 기존 상세 보고서)</label>
+<label><input id="export-callouts" type="checkbox" checked> 가구 이름·치수 표시 (안에 들어가면 직접 표시, 작거나 좁으면 바깥 범례로 연결)</label>
+<label><input id="export-gaps" type="checkbox"> 가구별 최단 벽/고정 설비 간격 포함 (통로 폭 아님)</label>
+<label><input id="export-unknowns" type="checkbox" checked> 미확정·미배치 상세 목록 포함</label>
+<label><input id="export-confirmed" type="checkbox"> 이번 PNG의 선택한 위치만 사용자 확정 배치로 표시 (치수·안전 확인 아님)</label>
+<p class="info warning">확정 표시는 배치/프로젝트 변경과 PNG 출력 후 해제됩니다. 옵션과 무관하게 벽·문·통로·높이·실측의 미검증 안내는 출력됩니다.</p>
+<p>앱/Git 파일은 프로그램입니다. 실제 개인 배치·사진·A/B/C안·공통 공간과 출처는 ‘배치 파일 저장’의 JSON으로 별도 백업하세요. PNG는 그림이며 배치를 복원할 수 없습니다. 외부 전송 없이 이 기기에 저장합니다.</p>
+</dialog>
+<dialog id="help"><h2>먼저 움직여 보세요</h2><p><b>1.</b> 왼쪽 가구를 도면으로 끌어놓습니다. 이미 배치된 가구 카드를 끌면 같은 가구의 위치를 바꿉니다.</p><p><b>2.</b> 가구를 선택하면 오른쪽에서 치수와 사진을 수정할 수 있습니다. 입력 단위는 cm, 저장 단위는 mm입니다. 모서리를 잡아 임의로 늘리는 기능은 없습니다.</p><p><b>3.</b> <span class="shortcut">R</span> 90° 회전, <span class="shortcut">방향키</span> 격자 단위 이동, <span class="shortcut">Shift+방향키</span> 10배 이동. 마우스 휠로 확대하고 빈 도면을 드래그해 화면을 이동합니다. 가구 위에서는 ‘화면 이동’ 또는 Alt+드래그를 사용하세요. ‘전체 맞춤’으로 도면을 가운데 정렬합니다.</p><p><b>4.</b> A/B/C는 가구 목록을 공유하는 다른 배치입니다. 치수를 고치면 모든 안에 적용됩니다. C는 빈 도면에서 시작합니다.</p><p><b>5.</b> 축척 맞추기: 도면에서 길이를 아는 두 끝점을 누르고 실제 길이를 cm로 입력합니다. 축척은 단일 비율이므로 원근이 있는 사진에 적용하면 안 됩니다. 수직 치수도 따로 대조하세요.</p><p><b>저장:</b> 자동 저장은 이 브라우저에만 남습니다. 파일을 옮기거나 브라우저 데이터를 지우기 전에 ‘배치 파일 저장’으로 JSON을 보관하세요. 다른 기기와 자동으로 동기화하지 않습니다.</p><p><b>출력과 백업:</b> PNG는 전달용 그림입니다. 앱/Git 파일과 개인 배치 데이터는 별개이며, 개인 배치·사진·A/B/C안·공통 공간·출처는 JSON으로 별도 백업하세요. PNG 출력 옵션에서 간격·미확정 목록과 이번 PNG의 위치 확정 여부를 선택할 수 있습니다.</p><p><b>범위:</b> 가구 본체는 직사각형입니다. 매트 겹침은 물리 충돌 대신 놀이공간 점유로 표시합니다. 등록·활성화한 벽 구간과 치수가 있는 고정 설비는 가구 본체와의 겹침을 검사합니다. 등록한 여닫이문의 회전 영역은 가구·고정 설비와 검사합니다. 숨겨도 검사는 유지됩니다. 경계 접촉과 0.5mm 이하 겹침은 알리지 않습니다. 치수가 없거나 검사에서 제외된 대상, 미등록 문·미닫이문·손잡이·높이·창·복도·반입 동선은 미검증입니다. 편집 중 벽을 가로질러 이동할 수 있고 놓은 위치의 경고는 남습니다. 실물 반입 시뮬레이션이나 설치 보증이 아닙니다.</p><div class="row" style="margin-top:16px"><button id="close-help" class="primary">시작하기</button><button id="reset" class="danger">초기 상태로 되돌리기</button></div></dialog>
+<dialog id="scale-checks-dialog" aria-labelledby="scale-checks-title">
+<div class="section-head"><h2 id="scale-checks-title">원본 도면 축척 비교</h2><button id="scale-checks-close" type="button">닫기</button></div>
+<p id="scale-checks-summary" role="status"></p>
+<p class="info warning">가로·세로·다른 방 구간을 같은 끝점 기준으로 대조하세요. 세 구간이 일치해도 현장 실측 확정이나 반입·설치 보증이 아닙니다.</p>
+<div id="scale-checks-list"></div>
+<button id="scale-checks-pick" type="button">도면에서 두 점 선택</button>
+<form id="scale-check-form" hidden>
+<p id="scale-check-error" role="alert"></p>
+<div class="field-grid"><div><label for="check-kind">구간</label><select id="check-kind"><option value="horizontal">가로</option><option value="vertical">세로</option><option value="other-room">다른 방</option></select></div><div><label for="check-length">알려진 길이 (cm)</label><input id="check-length" type="number" min=".1" max="10000" step=".1" required></div></div>
+<label for="check-reference">끝점 기준 (모르면 비워 두세요)</label><input id="check-reference" maxlength="500" placeholder="예: 마감 내측 벽면 사이">
+<label for="check-source">원본 출처 / 측정 근거</label><input id="check-source" maxlength="500" placeholder="예: 원본 도면 치수선, 현장 실측 날짜">
+<div class="field-grid"><div><label for="check-tolerance">허용 오차 (cm, 직접 정함)</label><input id="check-tolerance" type="number" min="0" max="10000" step=".1" placeholder="확인 전"></div><div><label for="check-status">확인 상태</label><select id="check-status"><option value="unconfirmed">확인 전</option><option value="confirmed">출처 확인</option></select></div></div>
+<p class="small">허용 오차를 비우면 미확인으로 보존합니다. 비교선 저장은 축척과 가구 위치·크기를 바꾸지 않습니다.</p>
+<button id="scale-check-save" class="primary" type="submit">비교선 저장</button>
+</form>
+</dialog>
+<dialog id="geometry-dialog" aria-labelledby="geometry-title">
+<div class="section-head"><h2 id="geometry-title">벽·고정 설비 · A/B/C 공통</h2><button id="geometry-close" type="button">닫기</button></div>
+<p class="info warning">검사 활성화된 벽·고정 설비와 가구 본체의 겹침을 입력 기준으로 검사합니다. 표시를 등록한 여닫이문의 회전 영역은 가구·고정 설비와 검사합니다. 숨겨도 검사는 유지됩니다. 치수 미확인 설비는 검사 미완료, 비활성화한 객체는 검사 제외입니다. 등록한 문 열림은 별도 ‘문 열림’ 화면에서 관리합니다. 미등록 문·미닫이문·설비 사용 공간·복도·반입 동선은 미검증이며 설치 보증이 아닙니다.</p>
+<div id="geometry-list"></div><div class="row"><button id="obstacle-new" type="button">＋ 고정 사각형 추가</button><button id="wall-new" type="button">＋ 벽 구간 추가</button></div>
+<p id="geometry-error" role="alert"></p>
+<form id="geometry-form" hidden novalidate>
+<p id="geometry-form-state" role="status"></p>
+<label for="g-name">이름</label><input id="g-name" required>
+<div id="obstacle-fields">
+<div class="field-grid"><div><label for="g-x">중심 X (cm)</label><input id="g-x" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-y">중심 Y (cm)</label><input id="g-y" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-width">폭 (cm, 모르면 빈 값)</label><input id="g-width" type="number" step="any" max="5000" placeholder="확인 필요"></div><div><label for="g-depth">깊이 (cm, 모르면 빈 값)</label><input id="g-depth" type="number" step="any" max="5000" placeholder="확인 필요"></div></div>
+<p class="small">좌표는 도면 좌상단 기준입니다. 폭/깊이가 없으면 본체 검증 불가로 표시하고 중심만 그립니다.</p>
+<label for="g-rotation">회전</label><select id="g-rotation"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select>
+</div>
+<div id="wall-fields" hidden>
+<p class="info">벽 중심선의 두 끝점과 두께를 입력하세요. 끝은 입력한 끝점에서 평평하게 끝납니다. 수평·수직 벽만 지원합니다. 문 입구는 벽을 두 구간으로 나누고 그 사이에 실제 빈 간격을 남겨 표현하세요.</p>
+<div class="field-grid"><div><label for="g-x1">시작 X (cm)</label><input id="g-x1" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-y1">시작 Y (cm)</label><input id="g-y1" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-x2">끝 X (cm)</label><input id="g-x2" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-y2">끝 Y (cm)</label><input id="g-y2" type="number" step="any" min="-100000" max="100000" required></div></div>
+<label for="g-thickness">벽 두께 (cm, 필수)</label><input id="g-thickness" type="number" step="any" max="5000" required placeholder="실제 두께 확인 필요">
+</div>
+<label for="g-source">출처 / 측정 근거</label><input id="g-source" placeholder="예: 원본 도면 치수선, 현장 실측 날짜">
+<label for="g-verification">확인 상태</label><select id="g-verification"><option value="unconfirmed">확인 전</option><option value="plan-observed">도면 확인</option><option value="field-measured">현장 실측 (출처 필수)</option></select>
+<label><input id="g-visible" type="checkbox"> 화면 표시</label><label><input id="g-check" type="checkbox"> 가구 본체와 겹침 검사 활성화</label>
+<div class="row"><button id="g-save" class="primary" type="submit">저장</button><button id="g-lock" type="button">잠금</button><button id="g-delete" class="danger" type="button">삭제</button></div>
+</form>
+</dialog>
+<dialog id="doors-dialog" aria-labelledby="doors-title">
+<div class="section-head"><h2 id="doors-title">여닫이문 · A/B/C 공통</h2><button id="doors-close" type="button">닫기</button></div>
+<p class="info warning">등록한 문짝의 회전 영역만 입력 기준으로 검사합니다. 미등록 문·미닫이문·손잡이·높이·반입 경로는 미검증입니다. 문을 추가해도 벽을 자동으로 자르지 않습니다.</p>
+<p class="small">보라 실선: 닫힌 문 / 초록 점선: 열린 문 / 보라 면: 지나가는 영역 (바깥 근사 최대 0.5mm)</p>
+<div id="doors-list"></div><button id="door-new" type="button">＋ 여닫이문 추가</button>
+<p id="door-error" role="alert"></p>
+<form id="door-form" hidden novalidate><p id="door-state" role="status"></p>
+<label for="d-name">문 이름</label><input id="d-name" required>
+<div class="field-grid"><div><label for="d-x">경첩 X (cm)</label><input id="d-x" type="number" step="any" required></div><div><label for="d-y">경첩 Y (cm)</label><input id="d-y" type="number" step="any" required></div><div><label for="d-width">문짝 폭 (cm, 필수)</label><input id="d-width" type="number" step="any" required></div><div><label for="d-opening">개방각 (1~90도)</label><input id="d-opening" type="number" min="1" max="90" step="any" required></div></div>
+<label for="d-closed">닫힌 문짝 방향</label><select id="d-closed"><option value="0">오른쪽 (0°)</option><option value="90">아래 (90°)</option><option value="180">왼쪽 (180°)</option><option value="270">위 (270°)</option></select>
+<label for="d-direction">화면에서 여는 방향</label><select id="d-direction"><option value="cw">시계 방향</option><option value="ccw">반시계 방향</option></select>
+<p class="info">입구는 같은 중심선 위 두 벽 사이 빈 간격입니다. 경첩과 닫힌 문 끝점이 그 양 끝과 맞아야 연결로 표시합니다. 실제 문틀 기준은 별도 확인하세요.</p>
+<div class="field-grid"><div><label for="d-wall-a">입구 옆 벽 1</label><select id="d-wall-a"></select></div><div><label for="d-wall-b">입구 옆 벽 2</label><select id="d-wall-b"></select></div></div>
+<label for="d-source">출처 / 측정 근거</label><input id="d-source">
+<label for="d-verification">확인 상태</label><select id="d-verification"><option value="unconfirmed">확인 전</option><option value="plan-observed">도면 관찰</option><option value="field-measured">현장 실측 (출처 필수)</option></select>
+<label><input id="d-visible" type="checkbox"> 화면 표시</label><label><input id="d-check" type="checkbox"> 회전 영역 검사 활성화</label>
+<div class="row"><button id="d-save" type="submit" class="primary">문 저장</button><button id="d-lock" type="button">잠금</button><button id="d-delete" type="button" class="danger">삭제</button></div></form>
+</dialog>
+<dialog id="rooms-dialog" aria-labelledby="rooms-title">
+<div class="section-head"><h2 id="rooms-title">방 경계 · A/B/C 공통</h2><button id="rooms-close" type="button">닫기</button></div>
+<p class="info warning">볼록한 마감 내측 경계만 지원합니다. 오목·교차 경계는 검증 불가입니다. 희망 방이 지정된 가구의 전체 본체를 검사하며 방 이름/희망 위치는 경계로 사용하지 않습니다.</p>
+<div id="rooms-list"></div><div class="row"><button id="room-new" type="button">＋ 방 경계 추가</button><button id="room-review-open" type="button">검토 초안 추가</button><input id="room-review-file" type="file" accept=".json,application/json" hidden></div><p class="small">방별 초안 JSON의 기하만 추가합니다. 같은 ID/방 경계가 있거나 축척이 다르면 기존 작업을 유지하고 거부합니다.</p><p id="room-error" role="alert"></p>
+<form id="room-form" hidden novalidate><p id="room-state" role="status"></p>
+<label for="r-name">경계 이름</label><input id="r-name" required>
+<label for="r-room">대상 방</label><select id="r-room"></select>
+<label for="r-points">꼭짓점 목록 (한 줄에 X, Y cm)</label><textarea id="r-points" rows="6" placeholder="100, 100&#10;400, 100&#10;400, 400&#10;100, 400" required></textarea>
+<p class="small">외곽 순서대로 3~64개를 입력하세요. 마지막 점은 첫 점에 자동 연결됩니다. 시작점을 반복하지 마세요. 경계 접촉과 바깥 0.5mm 이내는 포함으로 취급합니다.</p>
+<label for="r-source">출처 / 측정 근거</label><textarea id="r-source" rows="3"></textarea>
+<label for="r-verification">확인 상태</label><select id="r-verification"><option value="unconfirmed">확인 전</option><option value="plan-observed">도면 관찰</option><option value="field-measured">현장 실측 (출처 필수)</option></select>
+<label><input id="r-visible" type="checkbox"> 화면 표시</label><label><input id="r-check" type="checkbox"> 희망 방 전체 본체 포함 검사 활성화</label>
+<div class="row"><button id="r-save" type="submit" class="primary">경계 저장</button><button id="r-lock" type="button">잠금</button><button id="r-delete" type="button" class="danger">삭제</button></div></form>
+</dialog>
+<script>
+window.HOME_SEED = {
+  schemaVersion: 2,
+  units: 'mm',
+  title: 'Home Layout Lab',
+  background: {kind: 'blank', widthPx: 1200, heightPx: 800, imageData: null,
+    mmPerPx: 1, status: 'reference', calibration: null, validationLines: []},
+  rooms: [{id: 'workspace', name: '공간', use: '사용자 지정', labelPx: [600, 380], anchorPx: [600, 400]}],
+  furniture: [],
+  geometry: {schemaVersion: 1, walls: [], fixedObstacles: [], doors: [], roomPolygons: [],
+    coverage: {walls: 'unregistered', fixedObstacles: 'unregistered', doors: 'unregistered', roomPolygons: 'unregistered'}},
+  scenes: [{id: 'A', name: 'A | 시작안', placements: {}}, {id: 'B', name: 'B | 비교안', placements: {}}, {id: 'C', name: 'C | 빈 도면', placements: {}}],
+  activeScene: 'A'
+};
+window.HOME_BG = '';
+
+</script><script>
+(() => {
+  'use strict';
+  const MAX_OVERESTIMATE_MM = 0.5;
+  const finite = value => typeof value === 'number' && Number.isFinite(value);
+
+  function validate(door) {
+    if (!door || typeof door !== 'object' || Array.isArray(door) || door.kind !== 'hinged') throw Error('여닫이문만 지원합니다. 미닫이문은 미검증입니다.');
+    if (![door.hingeXMm, door.hingeYMm].every(n => finite(n) && Math.abs(n) <= 1000000)) throw Error('문 경첩 좌표가 올바르지 않습니다.');
+    if (!finite(door.widthMm) || door.widthMm <= 0 || door.widthMm > 50000) throw Error('문짝 폭은 확인된 양수 50000mm 이하여야 합니다.');
+    if (![0, 90, 180, 270].includes(door.closedAngleDeg) || !['cw', 'ccw'].includes(door.swingDirection)) throw Error('닫힌 문 방향 또는 회전 방향이 올바르지 않습니다.');
+    if (!finite(door.openingAngleDeg) || door.openingAngleDeg < 1 || door.openingAngleDeg > 90) throw Error('문 개방각은 1~90도만 지원합니다.');
+    return door;
+  }
+
+  function geometry(door) {
+    validate(door);
+    const start = door.closedAngleDeg * Math.PI / 180;
+    const sweep = door.openingAngleDeg * Math.PI / 180;
+    const sign = door.swingDirection === 'cw' ? 1 : -1;
+    const count = Math.max(1, Math.ceil(sweep / (2 * Math.acos(door.widthMm / (door.widthMm + MAX_OVERESTIMATE_MM)))));
+    const step = sweep / count;
+    const point = (angle, radius) => [door.hingeXMm + Math.cos(angle) * radius, door.hingeYMm + Math.sin(angle) * radius];
+    const hinge = [door.hingeXMm, door.hingeYMm];
+    const closed = point(start, door.widthMm), open = point(start + sign * sweep, door.widthMm);
+    const radius = door.widthMm / Math.cos(step / 2);
+    const polygon = [hinge, closed];
+    // Adjacent arc tangents meet outside the circle, so the polygon contains the swept sector.
+    for (let i = 0; i < count; i++) polygon.push(point(start + sign * step * (i + 0.5), radius));
+    polygon.push(open);
+    return {polygon, closed: [hinge, closed], open: [hinge, open], maxOverestimateMm: radius - door.widthMm};
+  }
+
+  window.HOME_DOOR_SWING = {validate, geometry};
+})();
+
+</script><script>
+(() => {
+  'use strict';
+  const finite = value => typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= 1000000;
+  const cross = (a, b, p) => (b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);
+  const onSegment = (a, b, p) => cross(a,b,p) === 0 && p[0] >= Math.min(a[0],b[0]) && p[0] <= Math.max(a[0],b[0]) && p[1] >= Math.min(a[1],b[1]) && p[1] <= Math.max(a[1],b[1]);
+
+  function intersects(a, b, c, d) {
+    const abC = cross(a,b,c), abD = cross(a,b,d), cdA = cross(c,d,a), cdB = cross(c,d,b);
+    return (Math.sign(abC)*Math.sign(abD) < 0 && Math.sign(cdA)*Math.sign(cdB) < 0) ||
+      onSegment(a,b,c) || onSegment(a,b,d) || onSegment(c,d,a) || onSegment(c,d,b);
+  }
+
+  function validate(pointsMm) {
+    if (!Array.isArray(pointsMm) || pointsMm.length < 3 || pointsMm.length > 64) throw Error('방 경계 꼭짓점은 3~64개여야 합니다.');
+    const seen = new Set();
+    for (const point of pointsMm) {
+      if (!Array.isArray(point) || point.length !== 2 || !finite(point[0]) || !finite(point[1])) throw Error('방 경계 좌표는 ±1,000,000mm 이내의 유한한 숫자 두 개여야 합니다.');
+      const key = `${point[0]},${point[1]}`;
+      if (seen.has(key)) throw Error('방 경계 꼭짓점이 중복되었습니다. 시작점은 마지막에 반복하지 않습니다.');
+      seen.add(key);
+    }
+    const count = pointsMm.length;
+    for (let i = 0; i < count; i++) for (let j = i+1; j < count; j++) {
+      if (j === i+1 || (i === 0 && j === count-1)) continue;
+      if (intersects(pointsMm[i],pointsMm[(i+1)%count],pointsMm[j],pointsMm[(j+1)%count])) throw Error('방 경계가 교차하거나 자기 자신과 접촉합니다.');
+    }
+    // Use a local origin to avoid cancellation from large absolute coordinates.
+    let area = 0;
+    for (let i = 1; i < count-1; i++) area += cross(pointsMm[0],pointsMm[i],pointsMm[i+1]);
+    if (area === 0) throw Error('방 경계 면적은 0보다 커야 합니다.');
+    const direction = Math.sign(area);
+    for (let i = 0; i < count; i++) {
+      const turn = cross(pointsMm[i],pointsMm[(i+1)%count],pointsMm[(i+2)%count]);
+      if (turn === 0) throw Error('방 경계에 일직선으로 퇴화한 꼭짓점이 있습니다.');
+      if (Math.sign(turn) !== direction) throw Error('오목 방 경계는 현재 미지원이며 검증 불가입니다. 볼록 경계만 등록할 수 있습니다.');
+    }
+    return pointsMm;
+  }
+
+  function distanceToSegment(point, a, b) {
+    const dx = b[0]-a[0], dy = b[1]-a[1];
+    const t = Math.max(0,Math.min(1,((point[0]-a[0])*dx+(point[1]-a[1])*dy)/(dx*dx+dy*dy)));
+    return Math.hypot(point[0]-a[0]-t*dx,point[1]-a[1]-t*dy);
+  }
+
+  function contains(pointsMm, bodyCorners) {
+    validate(pointsMm);
+    if (!Array.isArray(bodyCorners) || bodyCorners.length !== 4 || !bodyCorners.every(p=>Array.isArray(p)&&p.length===2&&p.every(n=>typeof n==='number'&&Number.isFinite(n)))) throw Error('유한한 가구 본체 꼭짓점 네 개가 필요합니다.');
+    validate(bodyCorners.map(p=>[p[0]-bodyCorners[0][0],p[1]-bodyCorners[0][1]]));
+    const direction = Math.sign(cross(pointsMm[0],pointsMm[1],pointsMm[2]));
+    // A convex boundary contains the whole body iff it contains every corner.
+    // Measure tolerance to segments, avoiding excess tolerance beyond a room corner.
+    return bodyCorners.every(point => {
+      const inside = pointsMm.every((a,i) => direction*cross(a,pointsMm[(i+1)%pointsMm.length],point) >= 0);
+      return inside || pointsMm.some((a,i) => distanceToSegment(point,a,pointsMm[(i+1)%pointsMm.length]) <= 0.5);
+    });
+  }
+
+  window.HOME_ROOM_BOUNDARY = {validate, contains};
+})();
+
+</script><script>
+(() => {
+  'use strict';
+  const collections = ['walls', 'fixedObstacles', 'doors', 'roomPolygons'];
+  const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const finite = (value, max = 1000000) => typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= max;
+  const dimension = value => finite(value, 50000) && value > 0;
+
+  function validateWall(wall) {
+    if (!object(wall) || !['x1Mm', 'y1Mm', 'x2Mm', 'y2Mm'].every(coord => finite(wall[coord])) || !dimension(wall.thicknessMm)) {
+      throw Error('벽 끝점 좌표 또는 두께가 올바르지 않습니다.');
+    }
+    if (wall.x1Mm === wall.x2Mm && wall.y1Mm === wall.y2Mm) throw Error('벽 길이는 0보다 커야 합니다.');
+    if (wall.x1Mm !== wall.x2Mm && wall.y1Mm !== wall.y2Mm) throw Error('사선 벽은 현재 미지원입니다. 수평/수직 벽만 등록할 수 있습니다.');
+  }
+
+  function empty() {
+    return {
+      schemaVersion: 1, walls: [], fixedObstacles: [], doors: [], roomPolygons: [],
+      // Registration coverage says nothing about collision checks or installation safety.
+      coverage: {walls: 'unregistered', fixedObstacles: 'unregistered', doors: 'unregistered', roomPolygons: 'unregistered'}
+    };
+  }
+
+  function validate(geometry) {
+    if (!object(geometry) || geometry.schemaVersion !== 1) throw Error('지원하지 않는 공간 기하 스키마 버전입니다.');
+    for (const key of collections) {
+      if (!Array.isArray(geometry[key])) throw Error(`공간 기하 ${key}는 목록이어야 합니다.`);
+    }
+    if (!object(geometry.coverage) || Object.keys(geometry.coverage).length !== collections.length || !collections.every(key => Object.hasOwn(geometry.coverage, key) && ['unregistered', 'partial', 'complete'].includes(geometry.coverage[key]))) {
+      throw Error('공간 기하 등록 범위(coverage)가 올바르지 않습니다.');
+    }
+    const ids = new Set(), roomIds = new Set();
+    for (const key of collections) {
+      for (const item of geometry[key]) {
+        if (!object(item) || typeof item.id !== 'string' || !/^[a-zA-Z0-9_-]{1,90}$/.test(item.id) || Object.hasOwn(Object.prototype, item.id) || item.id === 'prototype' || ids.has(item.id)) {
+          throw Error('공간 객체 ID가 올바르지 않거나 중복되었습니다.');
+        }
+        ids.add(item.id);
+        if (typeof item.name !== 'string' || typeof item.source !== 'string' || !['unconfirmed', 'plan-observed', 'field-measured'].includes(item.verification) || !['locked', 'visible', 'checkEnabled'].every(flag => typeof item[flag] === 'boolean')) {
+          throw Error('공간 객체 이름, 출처, 확인 상태 또는 표시/잠금/검사 설정이 올바르지 않습니다.');
+        }
+        if (item.verification === 'field-measured' && !item.source.trim()) throw Error('현장 실측 확인에는 출처가 필요합니다.');
+        if (key === 'fixedObstacles') {
+          if (!finite(item.xMm) || !finite(item.yMm) || !(item.widthMm === null || dimension(item.widthMm)) || !(item.depthMm === null || dimension(item.depthMm)) || ![0, 90, 180, 270].includes(item.rotation)) {
+            throw Error('고정 설비 좌표, 폭/깊이 또는 회전이 올바르지 않습니다.');
+          }
+        } else if (key === 'roomPolygons') {
+          if(typeof item.roomId!=='string'||!/^[a-zA-Z0-9_-]{1,90}$/.test(item.roomId)||roomIds.has(item.roomId))throw Error('방 경계는 방마다 하나씩 서로 다른 방 ID로 등록하세요.');
+          roomIds.add(item.roomId);
+          window.HOME_ROOM_BOUNDARY.validate(item.pointsMm);
+          if(item.accessZones!==undefined) {
+            if(!Array.isArray(item.accessZones)||item.accessZones.length>32)throw Error('접근 검토 구역은 32개 이하 목록이어야 합니다.');
+            for(const zone of item.accessZones) {
+              if(!object(zone)||typeof zone.id!=='string'||!/^[a-zA-Z0-9_-]{1,90}$/.test(zone.id)||Object.hasOwn(Object.prototype,zone.id)||zone.id==='prototype'||ids.has(zone.id))throw Error('접근 검토 구역 ID가 올바르지 않거나 중복되었습니다.');
+              ids.add(zone.id);
+              if(typeof zone.name!=='string'||typeof zone.source!=='string'||!['unconfirmed','plan-observed','field-measured'].includes(zone.verification)||!['visible','checkEnabled'].every(flag=>typeof zone[flag]==='boolean')||(zone.verification==='field-measured'&&!zone.source.trim()))throw Error('접근 검토 구역의 출처/확인 상태/표시/검사 설정이 올바르지 않습니다.');
+              window.HOME_ROOM_BOUNDARY.validate(zone.pointsMm);
+            }
+          }
+        } else if (key === 'doors') {
+          window.HOME_DOOR_SWING.validate(item);
+          if (!(item.openingWallIds === null || (Array.isArray(item.openingWallIds) && item.openingWallIds.length === 2 && item.openingWallIds.every(id => typeof id === 'string' && /^[a-zA-Z0-9_-]{1,90}$/.test(id)) && item.openingWallIds[0] !== item.openingWallIds[1]))) throw Error('문 입구는 서로 다른 두 벽 ID 또는 미연결(null)이어야 합니다.');
+        } else {
+          validateWall(item);
+        }
+      }
+    }
+    return geometry;
+  }
+
+  // Call only on a separately parsed candidate after preserving the original backup.
+  // Project-level validation remains the caller's responsibility.
+  function migrate(project) {
+    if (!object(project) || ![1, 2].includes(project.schemaVersion)) throw Error('지원하지 않는 프로젝트 버전입니다.');
+    if (project.schemaVersion === 1) {
+      if (Object.hasOwn(project, 'geometry')) throw Error('v1 프로젝트에 공간 기하가 포함되어 있어 자동 이전할 수 없습니다.');
+      project.geometry = empty();
+      project.schemaVersion = 2;
+    } else {
+      validate(project.geometry);
+    }
+    return project;
+  }
+
+  function wallPolygon(wall) {
+    validateWall(wall);
+    const half = wall.thicknessMm / 2;
+    if (wall.y1Mm === wall.y2Mm) {
+      const left = Math.min(wall.x1Mm, wall.x2Mm), right = Math.max(wall.x1Mm, wall.x2Mm);
+      return [[left, wall.y1Mm-half], [right, wall.y1Mm-half], [right, wall.y1Mm+half], [left, wall.y1Mm+half]];
+    }
+    const top = Math.min(wall.y1Mm, wall.y2Mm), bottom = Math.max(wall.y1Mm, wall.y2Mm);
+    return [[wall.x1Mm-half, top], [wall.x1Mm+half, top], [wall.x1Mm+half, bottom], [wall.x1Mm-half, bottom]];
+  }
+
+  // Convex polygons in mm. This numerical epsilon is separate from collision warning tolerance.
+  function polygonGap(a, b) {
+    const epsilon = 1e-7;
+    let separated = false, touching = false;
+    for (const polygon of [a, b]) {
+      if (!Array.isArray(polygon) || polygon.length < 3 || !polygon.every(p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite))) throw Error('간격 계산에는 유효한 볼록 다각형이 필요합니다.');
+    }
+    for (const polygon of [a, b]) for (let i = 0; i < polygon.length; i++) {
+      const p = polygon[i], q = polygon[(i + 1) % polygon.length];
+      const dx = q[0] - p[0], dy = q[1] - p[1], length = Math.hypot(dx, dy);
+      if (!length) throw Error('다각형 변의 길이는 0보다 커야 합니다.');
+      const project = point => (-dy * point[0] + dx * point[1]) / length;
+      const aa = a.map(project), bb = b.map(project);
+      const depth = Math.min(Math.max(...aa), Math.max(...bb)) - Math.max(Math.min(...aa), Math.min(...bb));
+      if (depth < -epsilon) separated = true;
+      if (depth <= epsilon) touching = true;
+    }
+    if (!separated && !touching) return {state:'overlap', distanceMm:0, from:null, to:null};
+    let distanceMm = Infinity, from = null, to = null;
+    const compare = (points, edges, reverse) => {
+      for (const p of points) for (let i = 0; i < edges.length; i++) {
+        const q = edges[i], r = edges[(i + 1) % edges.length], dx = r[0] - q[0], dy = r[1] - q[1];
+        const t = Math.max(0, Math.min(1, ((p[0] - q[0]) * dx + (p[1] - q[1]) * dy) / (dx * dx + dy * dy)));
+        const nearest = [q[0] + t * dx, q[1] + t * dy], distance = Math.hypot(p[0] - nearest[0], p[1] - nearest[1]);
+        if (distance < distanceMm) {
+          distanceMm = distance;
+          from = reverse ? nearest : [...p];
+          to = reverse ? [...p] : nearest;
+        }
+      }
+    };
+    compare(a, b, false);
+    compare(b, a, true);
+    return {state:separated ? 'separated' : 'touching', distanceMm:separated ? distanceMm : 0, from, to};
+  }
+
+  function doorOpening(door, geometry) {
+    if (!door.openingWallIds) return {linked:false, reason:'입구 미연결 · 검사 미완료'};
+    const walls = door.openingWallIds.map(id => geometry.walls.find(w => w.id === id));
+    if (walls.some(w => !w)) return {linked:false, reason:'연결 벽 누락 · 입구 미검증'};
+    const [a,b] = walls;
+    const horizontal = a.y1Mm === a.y2Mm && b.y1Mm === b.y2Mm && a.y1Mm === b.y1Mm;
+    const vertical = a.x1Mm === a.x2Mm && b.x1Mm === b.x2Mm && a.x1Mm === b.x1Mm;
+    if (!horizontal && !vertical) return {linked:false, reason:'같은 중심선의 수평/수직 벽 두 구간 필요'};
+    const axis = horizontal ? 'x' : 'y', fixed = horizontal ? a.y1Mm : a.x1Mm;
+    const spans = walls.map(w => [Math.min(w[axis+'1Mm'],w[axis+'2Mm']), Math.max(w[axis+'1Mm'],w[axis+'2Mm'])]).sort((x,y)=>x[0]-y[0]);
+    const start=spans[0][1],end=spans[1][0];
+    if (end <= start) return {linked:false, reason:'벽 사이 빈 입구 없음 · 벽은 자동으로 잘리지 않음'};
+    const blocked=geometry.walls.filter(w=>!door.openingWallIds.includes(w.id)).some(w=>{
+      const polygon=wallPolygon(w),along=polygon.map(p=>p[horizontal?0:1]),across=polygon.map(p=>p[horizontal?1:0]);
+      return fixed>Math.min(...across)&&fixed<Math.max(...across)&&Math.min(end,Math.max(...along))>Math.max(start,Math.min(...along));
+    });
+    if(blocked)return {linked:false, reason:'다른 등록 벽이 입구를 막음 · 입구 미검증'};
+    const [hinge,tip] = window.HOME_DOOR_SWING.geometry(door).closed;
+    const first=horizontal?[start,fixed]:[fixed,start],second=horizontal?[end,fixed]:[fixed,end];
+    const near=(p,q)=>Math.hypot(p[0]-q[0],p[1]-q[1])<=0.5;
+    const linked=(near(hinge,first)&&near(tip,second))||(near(hinge,second)&&near(tip,first));
+    return {linked, reason:linked?'두 벽 사이 빈 입구 연결 (입력 기준)':'경첩·닫힌 문 끝점이 빈 입구 양 끝과 불일치 · 입구 미검증'};
+  }
+
+  window.HOME_GEOMETRY = {empty, validate, migrate, wallPolygon, polygonGap, doorOpening};
+})();
+
+</script><script>
+(() => {
+  'use strict';
+  const object=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
+  const clone=value=>JSON.parse(JSON.stringify(value));
+  function merge(project,draft) {
+    if(!object(draft)||draft.kind!=='room-review'||draft.schemaVersion!==1||!project.rooms.some(r=>r.id===draft.roomId))throw Error('지원하지 않는 방 검토 초안입니다.');
+    if(!object(draft.background)||draft.background.kind!==project.background.kind||!Number.isFinite(draft.background.mmPerPx)||Math.abs(draft.background.mmPerPx-project.background.mmPerPx)>1e-9)throw Error('초안 축척이 현재 도면과 다릅니다. 원본 좌표를 다시 대조하세요.');
+    if(Object.hasOwn(draft,'scenes')||Object.hasOwn(draft,'furniture'))throw Error('방 초안에는 배치안이나 가구 변경을 포함할 수 없습니다.');
+    window.HOME_GEOMETRY.validate(draft.geometry);
+    if(draft.geometry.roomPolygons.length!==1||draft.geometry.roomPolygons[0].roomId!==draft.roomId)throw Error('초안에는 해당 방 경계 하나가 필요합니다.');
+    const next=clone(project.geometry);
+    for(const key of ['walls','fixedObstacles','doors','roomPolygons']) {
+      if(draft.geometry[key].some(item=>item.roomId!==draft.roomId))throw Error('다른 방의 객체가 초안에 섞여 있습니다.');
+      next[key].push(...clone(draft.geometry[key]));
+      if(draft.geometry[key].length)next.coverage[key]='partial';
+    }
+    window.HOME_GEOMETRY.validate(next);
+    return next;
+  }
+  window.HOME_ROOM_REVIEW={merge};
+})();
+
+</script><script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const clone = value => JSON.parse(JSON.stringify(value));
+  const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
+  const cm = mm => mm === null ? '' : mm / 10;
+  const hasBody = item => [item.widthMm, item.depthMm].every(n => Number.isFinite(n) && n > 0 && n <= 50000);
+  const dimensions = {x:'xMm', y:'yMm', width:'widthMm', depth:'depthMm', x1:'x1Mm', y1:'y1Mm', x2:'x2Mm', y2:'y2Mm', thickness:'thicknessMm'};
+  const fields = ['name', ...Object.keys(dimensions), 'rotation', 'source', 'verification', 'visible', 'check'];
+
+  function create({getProject, applyGeometry}) {
+    let selected = null, observed = null, type = 'fixedObstacles';
+    const dialog = $('geometry-dialog'), form = $('geometry-form');
+    const geometry = () => getProject().geometry;
+    const current = () => geometry()[type].find(item => item.id === selected);
+    const error = message => { $('geometry-error').textContent = message; };
+
+    function fill(item) {
+      const wall = type === 'walls';
+      $('wall-fields').hidden = !wall;
+      $('obstacle-fields').hidden = wall;
+      const values = {name:item.name, source:item.source, verification:item.verification, ...(wall ? {x1:cm(item.x1Mm), y1:cm(item.y1Mm), x2:cm(item.x2Mm), y2:cm(item.y2Mm), thickness:cm(item.thicknessMm)} : {x:cm(item.xMm), y:cm(item.yMm), width:cm(item.widthMm), depth:cm(item.depthMm), rotation:item.rotation})};
+      for (const [key, value] of Object.entries(values)) $('g-' + key).value = value;
+      $('g-visible').checked = item.visible;
+      $('g-check').checked = item.checkEnabled;
+      fields.forEach(key => { $('g-' + key).disabled = item.locked; });
+      $('g-save').disabled = item.locked;
+      $('g-delete').disabled = !selected || item.locked;
+      $('g-lock').disabled = !selected;
+      $('g-lock').textContent = item.locked ? '잠금 해제' : '잠금';
+      $('geometry-form-state').textContent = item.locked ? '잠김 · 수정 또는 삭제하려면 먼저 잠금을 해제하세요.' : (wall ? (selected ? '벽 구간 수정' : '새 벽 구간 · 끝점과 두께를 입력하세요.') : (selected ? '고정 설비 수정' : '새 고정 설비 · 치수를 모르면 비워 두세요.'));
+      form.hidden = false;
+      error('');
+    }
+
+    function render() {
+      const data = geometry();
+      $('geometry-list').innerHTML = ['walls', 'fixedObstacles'].map(key => data[key].map(item => {
+        const wall = key === 'walls';
+        const size = wall ? `길이 ${cm(Math.hypot(item.x2Mm - item.x1Mm, item.y2Mm - item.y1Mm))} / 두께 ${cm(item.thicknessMm)} cm` : (hasBody(item) ? `${cm(item.widthMm)} × ${cm(item.depthMm)} cm` : '본체 검증 불가 · 폭/깊이 확인 필요');
+        return `<div class="geometry-row"><button type="button" ${wall ? 'data-wall-edit' : 'data-geometry-edit'}="${esc(item.id)}">${wall ? '벽: ' : ''}${esc(item.name || '이름 없음')} 편집</button><p>${item.locked ? '잠김' : '편집 가능'} · ${item.visible ? '표시' : '숨김'} · ${item.checkEnabled ? (wall || hasBody(item) ? '본체 검사 대상' : '치수 미확인 · 검사 미완료') : '검사 제외'}</p><p>${size}</p></div>`;
+      }).join('')).join('') || '<p class="small">등록된 벽·고정 설비가 없습니다.</p>';
+      if (observed !== data) {
+        observed = data;
+        const item = current();
+        if (item) fill(item);
+        else { selected = null; form.hidden = true; error(''); }
+      }
+    }
+
+    function update(change) {
+      try {
+        const next = clone(geometry());
+        change(next);
+        window.HOME_GEOMETRY.validate(next);
+        applyGeometry(next);
+        return true;
+      } catch (err) { error(err.message); return false; }
+    }
+
+    $('geometry-open').onclick = () => { render(); dialog.showModal(); };
+    $('geometry-close').onclick = () => dialog.close();
+    dialog.addEventListener('close', () => { selected = null; form.hidden = true; error(''); });
+    $('obstacle-new').onclick = () => {
+      selected = null; type = 'fixedObstacles';
+      fill({name:'', xMm:0, yMm:0, widthMm:null, depthMm:null, rotation:0, source:'', verification:'unconfirmed', locked:false, visible:true, checkEnabled:true});
+      $('g-name').focus();
+    };
+    $('wall-new').onclick = () => {
+      selected = null; type = 'walls';
+      fill({name:'', x1Mm:0, y1Mm:0, x2Mm:0, y2Mm:0, thicknessMm:null, source:'', verification:'unconfirmed', locked:false, visible:true, checkEnabled:true});
+      $('g-name').focus();
+    };
+    $('geometry-list').onclick = event => {
+      const button = event.target.closest('[data-geometry-edit], [data-wall-edit]');
+      if (!button) return;
+      type = button.hasAttribute('data-wall-edit') ? 'walls' : 'fixedObstacles';
+      selected = button.dataset.wallEdit || button.dataset.geometryEdit;
+      const item = current();
+      if (item) fill(item);
+    };
+    form.onsubmit = event => {
+      event.preventDefault();
+      error('');
+      const old = current();
+      if (selected && !old) { error('대상을 다시 선택하세요.'); return; }
+      if (old?.locked) { error('먼저 잠금을 해제하세요.'); return; }
+      const mm = (key, nullable = false) => {
+        const input = $('g-' + key);
+        if (input.validity.badInput || (!nullable && !input.value.trim())) return NaN;
+        const property = dimensions[key];
+        if (old && input.value === String(cm(old[property]))) return old[property];
+        return input.value.trim() === '' ? null : Number(input.value) * 10;
+      };
+      const wall = type === 'walls';
+      const shape = wall ? {x1Mm:mm('x1'), y1Mm:mm('y1'), x2Mm:mm('x2'), y2Mm:mm('y2'), thicknessMm:mm('thickness')} : {xMm:mm('x'), yMm:mm('y'), widthMm:mm('width', true), depthMm:mm('depth', true), rotation:Number($('g-rotation').value)};
+      const item = {...old, ...shape, id:old?.id || (wall ? 'wall-' : 'fixed-') + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8), name:$('g-name').value.trim(), source:$('g-source').value.trim(), verification:$('g-verification').value, locked:false, visible:$('g-visible').checked, checkEnabled:$('g-check').checked};
+      if (!item.name) { error('이름을 입력하세요.'); return; }
+      if (!wall && [item.widthMm, item.depthMm].some(n => n !== null && (!Number.isFinite(n) || n <= 0 || n > 50000))) { error('본체 검증 불가 · 폭/깊이는 0 초과 5000cm 이하 또는 빈 값이어야 합니다.'); return; }
+      if (wall && (!Number.isFinite(item.thicknessMm) || item.thicknessMm <= 0 || item.thicknessMm > 50000)) { error('벽 두께는 0 초과 5000cm 이하로 입력하세요. 미확정 두께는 등록할 수 없습니다.'); return; }
+      const previous = selected;
+      selected = item.id;
+      if (!update(next => {
+        if (old) next[type][next[type].findIndex(x => x.id === old.id)] = item;
+        else next[type].push(item);
+        next.coverage[type] = 'partial';
+      })) selected = previous;
+    };
+    $('g-lock').onclick = () => {
+      const item = current();
+      if (item) update(next => { next[type].find(x => x.id === item.id).locked = !item.locked; });
+    };
+    $('g-delete').onclick = () => {
+      const item = current();
+      if (!item) return;
+      if (item.locked) { error('먼저 잠금을 해제하세요.'); return; }
+      update(next => {
+        next[type] = next[type].filter(x => x.id !== item.id);
+        next.coverage[type] = next[type].length ? 'partial' : 'unregistered';
+      });
+    };
+
+    function svgContent() {
+      const walls = `<g class="walls" pointer-events="none">${geometry().walls.filter(item => item.visible).map(item => {
+        const points = window.HOME_GEOMETRY.wallPolygon(item).map(point => point.join(',')).join(' ');
+        return `<g data-wall-id="${esc(item.id)}"><title>${esc(item.name)} · 벽 · ${item.checkEnabled ? '입력 기준 본체 검사' : '검사 제외'}</title><polygon points="${points}" fill="#5d7180"/><text x="${(item.x1Mm + item.x2Mm) / 2}" y="${(item.y1Mm + item.y2Mm) / 2 - item.thicknessMm / 2 - 70}" text-anchor="middle" font-family="sans-serif" font-size="145" fill="#364955">벽: ${esc(item.name)}${item.locked ? ' [잠금]' : ''}</text></g>`;
+      }).join('')}</g>`;
+      return walls + `<g class="fixed-obstacles" pointer-events="none">${geometry().fixedObstacles.filter(item => item.visible).map(item => {
+        const body = hasBody(item);
+        const shape = body ? `<rect x="${-item.widthMm / 2}" y="${-item.depthMm / 2}" width="${item.widthMm}" height="${item.depthMm}" fill="#e2caac" fill-opacity=".65" stroke="#805523" stroke-width="25" stroke-dasharray="55 25"/>` : '<path d="M -70 0 H 70 M 0 -70 V 70" stroke="#805523" stroke-width="25"/>';
+        const size = body ? `${cm(item.widthMm)} × ${cm(item.depthMm)} cm` : '본체 검증 불가';
+        return `<g data-geometry-id="${esc(item.id)}"><title>${esc(item.name)} · 고정 설비 · ${!item.checkEnabled ? '검사 제외' : body ? '입력 기준 본체 검사' : '치수 미확인 · 검사 미완료'}</title><g transform="translate(${item.xMm} ${item.yMm}) rotate(${item.rotation})">${shape}</g><text x="${item.xMm}" y="${item.yMm - 100}" text-anchor="middle" font-family="sans-serif" font-size="145" fill="#704519" stroke="white" stroke-width="25" paint-order="stroke">고정: ${esc(item.name)}${item.locked ? ' [잠금]' : ''}</text><text x="${item.xMm}" y="${item.yMm + 210}" text-anchor="middle" font-family="sans-serif" font-size="145" fill="#704519" stroke="white" stroke-width="25" paint-order="stroke">${size}</text></g>`;
+      }).join('')}</g>`;
+    }
+    return {render, svgContent};
+  }
+  window.HOME_GEOMETRY_EDITOR = {create};
+})();
+
+</script><script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const clone = value => JSON.parse(JSON.stringify(value));
+  const fields = ['name','x','y','width','closed','opening','direction','source','verification','wall-a','wall-b','visible','check'];
+  const dimensions = {x:'hingeXMm',y:'hingeYMm',width:'widthMm'};
+
+  function create({getProject,applyGeometry}) {
+    const dialog=$('doors-dialog'),form=$('door-form');
+    let selected=null,observed=null;
+    const data=()=>getProject().geometry;
+    const current=()=>data().doors.find(d=>d.id===selected);
+    const error=message=>{$('door-error').textContent=message;};
+
+    function fill(door) {
+      for (const key of ['wall-a','wall-b']) {
+        const missing=(door.openingWallIds||[]).filter(id=>!data().walls.some(w=>w.id===id));
+        $('d-'+key).innerHTML='<option value="">미연결 (미검증)</option>'+data().walls.map(w=>`<option value="${esc(w.id)}">${esc(w.name || w.id)}</option>`).join('')+missing.map(id=>`<option value="${esc(id)}">누락된 벽: ${esc(id)} (미검증)</option>`).join('');
+      }
+      const values={name:door.name,x:door.hingeXMm/10,y:door.hingeYMm/10,width:door.widthMm===null?'':door.widthMm/10,closed:door.closedAngleDeg,opening:door.openingAngleDeg,direction:door.swingDirection,source:door.source,verification:door.verification,'wall-a':door.openingWallIds?.[0]||'','wall-b':door.openingWallIds?.[1]||''};
+      for(const [key,value] of Object.entries(values)) $('d-'+key).value=value;
+      $('d-visible').checked=door.visible;$('d-check').checked=door.checkEnabled;
+      for(const key of fields)$('d-'+key).disabled=door.locked;
+      $('d-save').disabled=door.locked;$('d-delete').disabled=!selected||door.locked;$('d-lock').disabled=!selected;
+      $('d-lock').textContent=door.locked?'잠금 해제':'잠금';
+      $('door-state').textContent=door.locked?'잠김 · 수정/삭제 전 잠금 해제':selected?'문 수정':'새 여닫이문 · 실제 치수를 입력하세요.';
+      form.hidden=false;error('');
+    }
+    function render() {
+      const geometry=data();
+      $('doors-list').innerHTML=geometry.doors.map(door=>`<div class="geometry-row"><button type="button" data-door-edit="${esc(door.id)}">${esc(door.name)} 편집</button><p>${door.widthMm/10}cm · ${door.visible?'표시':'숨김'} · ${door.checkEnabled?'회전 영역 검사':'검사 제외'} · ${door.locked?'잠김':'편집 가능'}</p><p>${esc(window.HOME_GEOMETRY.doorOpening(door,geometry).reason)}</p></div>`).join('')||'<p>등록된 여닫이문이 없습니다. 미등록 문·미닫이문은 미검증입니다.</p>';
+      if(observed!==geometry){observed=geometry;const door=current();if(door)fill(door);else{selected=null;form.hidden=true;error('');}}
+    }
+    function update(change) {
+      try{const next=clone(data());change(next);window.HOME_GEOMETRY.validate(next);applyGeometry(next);return true;}
+      catch(err){error(err.message);return false;}
+    }
+    $('doors-open').onclick=()=>{render();dialog.showModal();};
+    $('doors-close').onclick=()=>dialog.close();
+    dialog.addEventListener('close',()=>{selected=null;form.hidden=true;error('');});
+    $('door-new').onclick=()=>{selected=null;fill({name:'',hingeXMm:0,hingeYMm:0,widthMm:null,closedAngleDeg:0,openingAngleDeg:90,swingDirection:'cw',source:'',verification:'unconfirmed',openingWallIds:null,locked:false,visible:true,checkEnabled:true});$('d-name').focus();};
+    $('doors-list').onclick=event=>{const button=event.target.closest('[data-door-edit]');if(!button)return;selected=button.dataset.doorEdit;fill(current());};
+    form.onsubmit=event=>{
+      event.preventDefault();error('');const old=current();
+      if(selected&&!old){error('문을 다시 선택하세요.');return;}
+      if(old?.locked){error('먼저 잠금을 해제하세요.');return;}
+      const mm=key=>{const input=$('d-'+key);if(input.validity.badInput||!input.value.trim())return NaN;const property=dimensions[key];return old&&input.value===String(old[property]/10)?old[property]:Number(input.value)*10;};
+      const wallA=$('d-wall-a').value,wallB=$('d-wall-b').value;
+      if(Boolean(wallA)!==Boolean(wallB)){error('입구 연결은 두 벽을 모두 선택하거나 모두 미연결로 두세요.');return;}
+      const door={...old,id:old?.id||'door-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),kind:'hinged',name:$('d-name').value.trim(),hingeXMm:mm('x'),hingeYMm:mm('y'),widthMm:mm('width'),closedAngleDeg:Number($('d-closed').value),openingAngleDeg:Number($('d-opening').value),swingDirection:$('d-direction').value,source:$('d-source').value.trim(),verification:$('d-verification').value,openingWallIds:wallA?[wallA,wallB]:null,locked:false,visible:$('d-visible').checked,checkEnabled:$('d-check').checked};
+      if(!door.name){error('문 이름을 입력하세요.');return;}
+      const previous=selected;selected=door.id;
+      if(!update(next=>{if(old)next.doors[next.doors.findIndex(d=>d.id===old.id)]=door;else next.doors.push(door);next.coverage.doors='partial';}))selected=previous;
+    };
+    $('d-lock').onclick=()=>{const door=current();if(door)update(next=>{next.doors.find(d=>d.id===door.id).locked=!door.locked;});};
+    $('d-delete').onclick=()=>{const door=current();if(!door)return;if(door.locked){error('먼저 잠금을 해제하세요.');return;}update(next=>{next.doors=next.doors.filter(d=>d.id!==door.id);next.coverage.doors=next.doors.length?'partial':'unregistered';});};
+
+    function svgContent() {
+      return `<g class="doors" pointer-events="none">${data().doors.filter(d=>d.visible).map(door=>{
+        const shape=window.HOME_DOOR_SWING.geometry(door),line=(points,kind,color,dash)=>`<line class="door-${kind}" x1="${points[0][0]}" y1="${points[0][1]}" x2="${points[1][0]}" y2="${points[1][1]}" stroke="${color}" stroke-width="28" ${dash?'stroke-dasharray="55 30"':''}/>`;
+        return `<g data-door-id="${esc(door.id)}"><title>${esc(door.name)} · ${esc(window.HOME_GEOMETRY.doorOpening(door,data()).reason)}</title><polygon class="door-sweep" points="${shape.polygon.map(p=>p.join(',')).join(' ')}" fill="#9165ad" fill-opacity=".16"/>${line(shape.closed,'closed','#6e3b8b',false)}${line(shape.open,'open','#18786c',true)}<circle cx="${door.hingeXMm}" cy="${door.hingeYMm}" r="38" fill="#6e3b8b"/><text x="${door.hingeXMm}" y="${door.hingeYMm-100}" font-size="145" fill="#6e3b8b">문: ${esc(door.name)}</text></g>`;
+      }).join('')}</g>`;
+    }
+    return {render,svgContent};
+  }
+  window.HOME_DOOR_EDITOR={create};
+})();
+
+</script><script>
+(() => {
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const clone=value=>JSON.parse(JSON.stringify(value));
+  const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const textPoints=points=>points.map(p=>p.map(n=>n/10).join(', ')).join('\n');
+  const fields=['name','room','points','source','verification','visible','check'];
+
+  function create({getProject,applyGeometry}) {
+    let selected=null,observed=null;
+    const data=()=>getProject().geometry;
+    const current=()=>data().roomPolygons.find(r=>r.id===selected);
+    const error=message=>{$('room-error').textContent=message;};
+    const dialog=$('rooms-dialog'),form=$('room-form');
+
+    function fill(room) {
+      $('r-room').innerHTML='<option value="">방 선택</option>'+getProject().rooms.map(r=>`<option value="${esc(r.id)}">${esc(r.name+' / '+r.use)}</option>`).join('');
+      const values={name:room.name,room:room.roomId,points:textPoints(room.pointsMm),source:room.source,verification:room.verification};
+      for(const [key,value] of Object.entries(values))$('r-'+key).value=value;
+      $('r-visible').checked=room.visible;$('r-check').checked=room.checkEnabled;
+      for(const key of fields)$('r-'+key).disabled=room.locked;
+      $('r-save').disabled=room.locked;$('r-delete').disabled=!selected||room.locked;$('r-lock').disabled=!selected;
+      $('r-lock').textContent=room.locked?'잠금 해제':'잠금';
+      $('room-state').textContent=room.locked?'잠김 · 수정/삭제 전 잠금 해제':selected?'방 경계 수정':'새 방 경계 · 마감 내측 좌표를 입력하세요.';
+      form.hidden=false;error('');
+    }
+    function render() {
+      const geometry=data();
+      $('rooms-list').innerHTML=geometry.roomPolygons.map(room=>{
+        const label=getProject().rooms.find(r=>r.id===room.roomId);
+        const state={unconfirmed:'확인 전','plan-observed':'도면 관찰','field-measured':'현장 실측 입력'}[room.verification];
+        return `<div class="geometry-row"><button type="button" data-room-edit="${esc(room.id)}">${esc(room.name)} 편집</button><p>${esc(label?.name)} / ${esc(label?.use)} · ${room.pointsMm.length}개 꼭짓점 · ${state}</p><p>${room.visible?'표시':'숨김'} · ${room.checkEnabled?'전체 본체 포함 검사':'검사 제외'} · ${room.locked?'잠김':'편집 가능'}</p><p class="room-source">${esc(room.source||'출처 미입력')}</p>${(room.accessZones||[]).map(z=>`<p class="room-source">${esc(z.name)} · ${z.checkEnabled?'점유 검사':'검사 제외'} · ${esc(z.source)}</p>`).join('')}</div>`;
+      }).join('')||'<p>등록된 방 경계가 없습니다. 방 이름과 희망 위치는 경계가 아닙니다.</p>';
+      if(observed!==geometry){observed=geometry;const room=current();if(room)fill(room);else{selected=null;form.hidden=true;error('');}}
+    }
+    function update(change) {
+      try{const next=clone(data());change(next);window.HOME_GEOMETRY.validate(next);applyGeometry(next);return true;}
+      catch(err){error(err.message);return false;}
+    }
+    $('rooms-open').onclick=()=>{render();dialog.showModal();};
+    $('rooms-close').onclick=()=>dialog.close();
+    $('room-review-open').onclick=()=>$('room-review-file').click();
+    $('room-review-file').onchange=async event=>{
+      const file=event.target.files[0];event.target.value='';if(!file)return;
+      try{
+        if(file.size>3000000)throw Error('방 초안 파일은 3MB 이하로 선택하세요.');
+        const draft=JSON.parse(await file.text());
+        const next=window.HOME_ROOM_REVIEW.merge(getProject(),draft);
+        applyGeometry(next);error('방 초안을 추가했습니다. 도면 관찰값이며 현장 실측은 미검증입니다.');
+      }catch(err){error('초안 추가 실패: '+err.message);}
+    };
+    dialog.addEventListener('close',()=>{selected=null;form.hidden=true;error('');});
+    $('room-new').onclick=()=>{selected=null;fill({name:'',roomId:'',pointsMm:[],source:'',verification:'unconfirmed',locked:false,visible:true,checkEnabled:true});$('r-name').focus();};
+    $('rooms-list').onclick=event=>{const button=event.target.closest('[data-room-edit]');if(button){selected=button.dataset.roomEdit;fill(current());}};
+    form.onsubmit=event=>{
+      event.preventDefault();error('');const old=current();
+      if(selected&&!old){error('경계를 다시 선택하세요.');return;}
+      if(old?.locked){error('먼저 잠금을 해제하세요.');return;}
+      try{
+        const text=$('r-points').value.trim();
+        const pointsMm=old&&text===textPoints(old.pointsMm)?old.pointsMm:text.split(/\n/).map(line=>{
+          const values=line.trim().split(',');
+          if(values.length!==2||values.some(s=>!s.trim()||!Number.isFinite(Number(s))))throw Error('각 줄에 X, Y를 cm 숫자로 입력하세요.');
+          return values.map(s=>Number(s)*10);
+        });
+        const room={...old,id:old?.id||'room-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),name:$('r-name').value.trim(),roomId:$('r-room').value,pointsMm,source:$('r-source').value.trim(),verification:$('r-verification').value,locked:false,visible:$('r-visible').checked,checkEnabled:$('r-check').checked};
+        if(!room.name)throw Error('경계 이름을 입력하세요.');
+        const previous=selected;selected=room.id;
+        if(!update(next=>{if(old)next.roomPolygons[next.roomPolygons.findIndex(r=>r.id===old.id)]=room;else next.roomPolygons.push(room);next.coverage.roomPolygons='partial';}))selected=previous;
+      }catch(err){error(err.message);}
+    };
+    $('r-lock').onclick=()=>{const room=current();if(room)update(next=>{next.roomPolygons.find(r=>r.id===room.id).locked=!room.locked;});};
+    $('r-delete').onclick=()=>{const room=current();if(!room)return;if(room.locked){error('먼저 잠금을 해제하세요.');return;}update(next=>{next.roomPolygons=next.roomPolygons.filter(r=>r.id!==room.id);next.coverage.roomPolygons=next.roomPolygons.length?'partial':'unregistered';});};
+    function svgContent() {
+      const boundaries=`<g class="room-boundaries" pointer-events="none">${data().roomPolygons.filter(r=>r.visible).map(room=>`<g data-room-boundary-id="${esc(room.id)}"><title>${esc(room.name)} · 입력 기준 경계 · ${room.checkEnabled?'포함 검사':'검사 제외'}</title><polygon points="${room.pointsMm.map(p=>p.join(',')).join(' ')}" fill="#218071" fill-opacity=".05" stroke="#218071" stroke-width="22" stroke-dasharray="80 40"/></g>`).join('')}</g>`;
+      const access=data().roomPolygons.filter(r=>r.visible).flatMap(r=>(r.accessZones||[]).filter(z=>z.visible));
+      return boundaries+`<g class="access-zones" pointer-events="none">${access.map(z=>`<polygon data-access-zone-id="${esc(z.id)}" points="${z.pointsMm.map(p=>p.join(',')).join(' ')}" fill="#e2a541" fill-opacity=".25" stroke="#b87814" stroke-width="24" stroke-dasharray="40 25"><title>${esc(z.name)} · 참고 구역, 실제 접근 미검증</title></polygon>`).join('')}</g>`;
+    }
+    return {render,svgContent};
+  }
+  window.HOME_ROOM_EDITOR={create};
+})();
+
+</script><script>
+(() => {
+  'use strict';
+  const directions = [
+    {key:'front',field:'clearanceFrontMm',label:'앞'},
+    {key:'back',field:'clearanceBackMm',label:'뒤'},
+    {key:'left',field:'clearanceLeftMm',label:'좌'},
+    {key:'right',field:'clearanceRightMm',label:'우'}
+  ];
+  const amount = n => typeof n === 'number' && Number.isFinite(n) && n >= 0 && n <= 10000;
+  function validate(f) {
+    if (!f || typeof f !== 'object' || Array.isArray(f) || !amount(f.clearanceFrontMm)) throw Error('앞쪽 사용 여유는 0~1000cm여야 합니다.');
+    for (const {field} of directions.slice(1)) if (f[field] != null && !amount(f[field])) throw Error('사용 여유는 미지정 또는 0~1000cm여야 합니다.');
+    if (f.clearanceBasis !== undefined && !['unspecified','user','manufacturer'].includes(f.clearanceBasis)) throw Error('사용 여유의 입력 근거가 올바르지 않습니다.');
+    if (f.clearanceSource !== undefined && (typeof f.clearanceSource !== 'string' || f.clearanceSource.length > 500)) throw Error('사용 여유 출처는 500자 이하 글이어야 합니다.');
+    if (f.clearanceBasis === 'manufacturer' && !f.clearanceSource?.trim()) throw Error('제조사 기준에는 확인한 문서나 출처를 입력해 주세요.');
+    return f;
+  }
+  function zones(f,p) {
+    validate(f);
+    if (![f.widthMm,f.depthMm].every(n=>Number.isFinite(n)&&n>0)) return [];
+    const w=f.widthMm/2,d=f.depthMm/2,a=p.rotation*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
+    return directions.filter(({field})=>f[field]>0).map(({key,field,label})=>{
+      const n=f[field];
+      const strips = {
+        front:[[-w,d],[w,d],[w,d+n],[-w,d+n]],
+        back:[[-w,-d-n],[w,-d-n],[w,-d],[-w,-d]],
+        left:[[-w-n,-d],[-w,-d],[-w,d],[-w-n,d]],
+        right:[[w,-d],[w+n,-d],[w+n,d],[w,d]]
+      };
+      return {key,label,amountMm:n,points:strips[key].map(([x,y])=>[p.xMm+x*c-y*s,p.yMm+x*s+y*c])};
+    });
+  }
+  window.HOME_CLEARANCE = {directions,validate,zones};
+})();
+
+</script><script>
+(() => {
+  'use strict';
+  const width = 2200, margin = 48, railWidth = 420, gutter = 32;
+  const mapMaxWidthFor = pageWidth => pageWidth - 2 * (margin + railWidth + gutter);
+  const mapMaxWidth = mapMaxWidthFor(width);
+  const padding = 14, lineHeight = 31, rowGap = 16;
+  const nameFont = 'bold 24px sans-serif', dimensionFont = '22px sans-serif';
+  const insideNameFont = 'bold 22px sans-serif', insideDimensionFont = '18px sans-serif';
+  const insidePadding = 8, insideLineHeight = 26;
+  const colors = ['#216f79', '#885738', '#6952a0', '#377541', '#a14263', '#386eaa', '#9a5b13', '#7a3e8e', '#1d6b4f', '#a83232', '#2b5f9e', '#6a6f1f'];
+  const lineDashes = [[], [20, 10], [5, 9], [28, 8, 5, 8], [12, 8], [34, 10, 5, 10], [4, 6, 18, 6], [45, 10], [16, 7, 3, 7], [8, 12]];
+
+  function internalLabel(context, item, wrap) {
+    const angle = item.rotation * Math.PI / 180;
+    const c = Math.abs(Math.cos(angle)), s = Math.abs(Math.sin(angle));
+    const title = `${String(item.number).padStart(2, '0')} · ${item.name}`;
+    for (const lines of [1, 2]) {
+      const height = (lines + 1) * insideLineHeight + 2 * insidePadding;
+      const roomX = item.bodyWidth - s * height, roomY = item.bodyHeight - c * height;
+      if (roomX < 0 || roomY < 0) continue;
+      const available = Math.min(c ? roomX / c : Infinity, s ? roomY / s : Infinity) - 2 * insidePadding;
+      if (!(available > 0)) continue;
+      context.font = insideDimensionFont;
+      const dimensionWidth = context.measureText(item.dimensions).width;
+      if (dimensionWidth > available) continue;
+      context.font = insideNameFont;
+      const nameLines = wrap(context, title, available);
+      if (nameLines.length > lines) continue;
+      if (nameLines.length === 2 && !title.includes('\n')) {
+        const space = nameLines[0].lastIndexOf(' ');
+        const tail = nameLines[0].slice(space + 1) + nameLines[1];
+        if (space > 0 && context.measureText(tail).width <= available) {
+          nameLines[0] = nameLines[0].slice(0, space + 1); nameLines[1] = tail;
+        }
+      }
+      const textWidth = Math.max(dimensionWidth, ...nameLines.map(line => context.measureText(line).width));
+      if (textWidth > available) continue;
+      const width = textWidth + 2 * insidePadding;
+      return {id: item.id, x: item.centerX - width / 2, width, height,
+        centerY: item.centerY, nameLines, dimensionLines: [item.dimensions]};
+    }
+    return null;
+  }
+
+  function layout(context, items, geometry, top, wrap, pageWidth = width) {
+    const {bounds, mapWidth, mapHeight} = geometry;
+    const mapX = (pageWidth - mapWidth) / 2;
+    // SVG's default xMidYMid meet preserves aspect ratio after integer size rounding.
+    const scale = Math.min(mapWidth / bounds.w, mapHeight / bounds.h);
+    const insetX = (mapWidth - bounds.w * scale) / 2;
+    const insetY = (mapHeight - bounds.h * scale) / 2;
+    const labels = [], internalLabels = [], mapped = [], bodyBoxes = [], nearBoxes = [];
+    const boxFor = (item, centerX, centerY) => {
+      const angle = item.rotation * Math.PI / 180, c = Math.abs(Math.cos(angle)), s = Math.abs(Math.sin(angle));
+      return {x: centerX - (item.widthMm * c + item.depthMm * s) * scale / 2,
+        y: centerY - (item.widthMm * s + item.depthMm * c) * scale / 2,
+        width: (item.widthMm * c + item.depthMm * s) * scale,
+        height: (item.widthMm * s + item.depthMm * c) * scale};
+    };
+    const overlaps = (a, b, gap = 0) => a.x < b.x + b.width + gap && a.x + a.width + gap > b.x && a.y < b.y + b.height + gap && a.y + a.height + gap > b.y;
+    items.forEach((item, index) => {
+      const centerX = mapX + insetX + (item.xMm - bounds.x) * scale;
+      const centerY = insetY + (item.yMm - bounds.y) * scale;
+      bodyBoxes.push(boxFor(item, centerX, centerY));
+      const inside = internalLabel(context, {...item, centerX, centerY,
+        bodyWidth: item.widthMm * scale, bodyHeight: item.depthMm * scale}, wrap);
+      if (inside) {internalLabels.push(inside); return;}
+      mapped.push({item, index, centerX, centerY});
+    });
+    const nearWidth = Math.min(railWidth, Math.max(250, Math.min(railWidth, mapWidth * .28)));
+    for (const {item, index, centerX, centerY} of mapped) {
+      context.font = nameFont;
+      const nearNameLines = wrap(context, `${String(item.number).padStart(2, '0')} · ${item.name}`, nearWidth - 2 * padding);
+      context.font = dimensionFont;
+      const nearDimensionLines = wrap(context, item.dimensions, nearWidth - 2 * padding);
+      const nearHeight = (nearNameLines.length + nearDimensionLines.length) * lineHeight + padding * 2;
+      let near = null;
+      if (item.nearLabels && item.widthMm >= 700 && item.depthMm >= 700 && item.name.length <= 24) {
+        const candidates = [
+          {x: centerX + bodyBoxes[index].width / 2 + gutter, y: centerY - nearHeight / 2, side: 'right'},
+          {x: centerX - bodyBoxes[index].width / 2 - gutter - nearWidth, y: centerY - nearHeight / 2, side: 'left'},
+          {x: centerX - nearWidth / 2, y: centerY - bodyBoxes[index].height / 2 - gutter - nearHeight, side: 'top'},
+          {x: centerX - nearWidth / 2, y: centerY + bodyBoxes[index].height / 2 + gutter, side: 'bottom'}
+        ];
+        near = candidates.find(candidate => {
+          const box = {x: candidate.x, y: candidate.y, width: nearWidth, height: nearHeight};
+          return box.x >= mapX + gutter && box.x + box.width <= mapX + mapWidth - gutter && box.y >= insetY + gutter && box.y + box.height <= insetY + mapHeight - gutter
+            && !bodyBoxes.some((body, bodyIndex) => bodyIndex !== index && overlaps(box, body, gutter / 2))
+            && !nearBoxes.some(other => overlaps(box, other, gutter / 2));
+        });
+      }
+      if (near) {
+        const box = {x: near.x, y: near.y, width: nearWidth, height: nearHeight};
+        nearBoxes.push(box);
+        const dx = near.x + nearWidth / 2 - centerX, dy = near.y + nearHeight / 2 - centerY;
+        const length = Math.hypot(dx, dy) || 1, ray = {x: dx / length, y: dy / length};
+        const angle = item.rotation * Math.PI / 180, c = Math.cos(angle), s = Math.sin(angle);
+        const localX = ray.x * c + ray.y * s, localY = -ray.x * s + ray.y * c;
+        const edgeDistance = Math.min(Math.abs(localX) > 1e-12 ? item.widthMm / 2 / Math.abs(localX) : Infinity,
+          Math.abs(localY) > 1e-12 ? item.depthMm / 2 / Math.abs(localY) : Infinity);
+        const anchor = {x: centerX + ray.x * edgeDistance * scale, y: centerY + ray.y * edgeDistance * scale};
+        const end = near.side === 'right' ? {x: near.x, y: near.y + nearHeight / 2}
+          : near.side === 'left' ? {x: near.x + nearWidth, y: near.y + nearHeight / 2}
+          : near.side === 'top' ? {x: near.x + nearWidth / 2, y: near.y + nearHeight}
+          : {x: near.x + nearWidth / 2, y: near.y};
+        labels.push({id: item.id, side: 'near', x: near.x, y: near.y, width: nearWidth, height: nearHeight,
+          nameLines: nearNameLines, dimensionLines: nearDimensionLines, color: colors[index % colors.length], lineDash: lineDashes[index % lineDashes.length], centerX, centerY,
+          anchor, points: [anchor, {x: near.x + nearWidth / 2, y: anchor.y}, {x: end.x, y: end.y}, end]});
+        continue;
+      }
+      const side = centerX < mapX + mapWidth / 3 ? 'left'
+        : centerX > mapX + mapWidth * 2 / 3 ? 'right' : 'bottom';
+      const angle = item.rotation * Math.PI / 180;
+      const c = Math.cos(angle), s = Math.sin(angle);
+      const ray = side === 'bottom' ? {x: 0, y: 1} : {x: side === 'left' ? -1 : 1, y: 0};
+      const localX = ray.x * c + ray.y * s;
+      const localY = -ray.x * s + ray.y * c;
+      const edgeDistance = Math.min(
+        Math.abs(localX) > 1e-12 ? item.widthMm / 2 / Math.abs(localX) : Infinity,
+        Math.abs(localY) > 1e-12 ? item.depthMm / 2 / Math.abs(localY) : Infinity,
+      );
+      const labelWidth = side === 'bottom' ? Math.min(railWidth, mapWidth) : railWidth;
+      context.font = nameFont;
+      const nameLines = wrap(context, `${String(item.number).padStart(2, '0')} · ${item.name}`, labelWidth - 2 * padding);
+      context.font = dimensionFont;
+      const dimensionLines = wrap(context, item.dimensions, labelWidth - 2 * padding);
+      labels.push({id: item.id, side, x: side === 'left' ? margin : side === 'right' ? pageWidth - margin - railWidth : mapX,
+        width: labelWidth, height: (nameLines.length + dimensionLines.length) * lineHeight + padding * 2,
+        nameLines, dimensionLines, color: colors[index % colors.length], lineDash: lineDashes[index % lineDashes.length], centerX, centerY,
+        anchorX: centerX + ray.x * edgeDistance * scale,
+        anchorOffsetY: ray.y * edgeDistance * scale});
+    }
+    const rails = ['left', 'right'].map(side => labels.filter(label => label.side === side)
+      .sort((a, b) => a.centerY - b.centerY || a.centerX - b.centerX || a.id.localeCompare(b.id)));
+    const bottom = labels.filter(label => label.side === 'bottom')
+      .sort((a, b) => a.centerX - b.centerX || a.centerY - b.centerY || a.id.localeCompare(b.id));
+    const bottomWidth = Math.min(railWidth, mapWidth);
+    const bottomColumns = bottom.length ? Math.max(1, Math.floor((mapWidth + gutter) / (bottomWidth + gutter))) : 0;
+    const bottomRows = [];
+    for (let index = 0; index < bottom.length; index += bottomColumns) bottomRows.push(bottom.slice(index, index + bottomColumns));
+    const bottomLaneGap = 18;
+    const bottomBandInset = 12;
+    const maxBottomRowLength = bottomRows.reduce((max, row) => Math.max(max, row.length), 0);
+    const bottomBandHeight = Math.max(48, maxBottomRowLength * bottomLaneGap + bottomBandInset);
+    const bottomRowGap = bottomBandHeight;
+    const bottomHeight = bottomRows.reduce((sum, row) => sum + Math.max(...row.map(label => label.height)), 0)
+      + Math.max(0, bottomRows.length - 1) * bottomRowGap;
+    const sideHeight = Math.max(mapHeight, ...rails.map(rail => rail.reduce((sum, label) => sum + label.height, 0) + Math.max(0, rail.length - 1) * rowGap));
+    const bottomGap = bottomBandHeight;
+    const height = sideHeight + (bottomRows.length ? bottomGap + bottomHeight : 0);
+    const mapY = top + (sideHeight - mapHeight) / 2;
+    for (const label of internalLabels) label.y = mapY + label.centerY - label.height / 2;
+    for (const label of labels.filter(label => label.side === 'near')) {
+      const delta = mapY;
+      label.y += delta;
+      for (const point of label.points) point.y += delta;
+    }
+    for (const rail of rails) {
+      let nextY = top;
+      for (const label of rail) {
+        label.anchor = {x: label.anchorX, y: mapY + label.centerY};
+        label.y = Math.max(nextY, label.anchor.y - label.height / 2);
+        nextY = label.y + label.height + rowGap;
+      }
+      let bottom = top + sideHeight;
+      for (const label of [...rail].reverse()) {
+        label.y = Math.min(label.y, bottom - label.height);
+        bottom = label.y - rowGap;
+        const left = label.side === 'left', direction = left ? -1 : 1;
+        const edge = left ? mapX : mapX + mapWidth;
+        const end = {x: left ? label.x + label.width : label.x, y: label.y + label.height / 2};
+        label.anchor = {x: label.anchorX, y: mapY + label.centerY};
+        label.points = [label.anchor, {x: edge + direction * 10, y: label.anchor.y},
+          {x: edge + direction * 22, y: end.y}, end];
+      }
+    }
+    let bottomY = top + sideHeight + bottomGap;
+    for (const [rowIndex, row] of bottomRows.entries()) {
+      const rowHeight = Math.max(...row.map(label => label.height));
+      const rowWidth = row.length * bottomWidth + Math.max(0, row.length - 1) * gutter;
+      const rowX = mapX + (mapWidth - rowWidth) / 2;
+      row.forEach((label, column) => {
+        label.x = rowX + column * (bottomWidth + gutter);
+        label.y = bottomY;
+        label.anchor = {x: label.anchorX, y: mapY + label.centerY + label.anchorOffsetY};
+        const routeY = bottomY - bottomBandHeight + bottomBandInset + column * bottomLaneGap;
+        const end = {x: label.x + label.width / 2, y: label.y};
+        label.routeY = routeY;
+        if (rowIndex === 0) {
+          label.points = [label.anchor, {x: label.anchor.x, y: routeY}, {x: end.x, y: routeY}, end];
+        } else {
+          const left = label.anchor.x < mapX + mapWidth / 2;
+          const railX = left ? mapX - 12 : mapX + mapWidth + 12;
+          const mapBottom = mapY + mapHeight;
+          label.points = [label.anchor, {x: label.anchor.x, y: mapBottom}, {x: railX, y: mapBottom},
+            {x: railX, y: routeY}, {x: end.x, y: routeY}, end];
+        }
+      });
+      bottomY += rowHeight + bottomRowGap;
+    }
+    return {height, mapX, mapY, mapWidth, mapHeight, labels, internalLabels};
+  }
+
+  function prepareSvg(text, callouts) {
+    const removable = callouts ? [...callouts.internalLabels, ...callouts.labels.filter(label => label.side === 'near')] : [];
+    if (!removable.length) return text;
+    const svg = new DOMParser().parseFromString(text, 'image/svg+xml').documentElement;
+    const internalIds = new Set(removable.map(label => label.id));
+    for (const piece of svg.querySelectorAll('.piece')) {
+      if (internalIds.has(piece.getAttribute('data-id'))) piece.querySelector(':scope > text').remove();
+    }
+    return new XMLSerializer().serializeToString(svg);
+  }
+
+  function draw(context, callouts) {
+    context.lineJoin = 'round'; context.lineCap = 'round';
+    for (const label of callouts.labels) {
+      if (typeof context.setLineDash === 'function') context.setLineDash(label.lineDash || []);
+      context.beginPath();
+      label.points.forEach((point, index) => index ? context.lineTo(point.x, point.y) : context.moveTo(point.x, point.y));
+      context.strokeStyle = 'white'; context.lineWidth = 7; context.stroke();
+      context.strokeStyle = label.color; context.lineWidth = 2.5; context.stroke();
+      context.beginPath(); context.arc(label.anchor.x, label.anchor.y, 5, 0, Math.PI * 2);
+      context.fillStyle = label.color; context.fill();
+      context.strokeStyle = 'white'; context.lineWidth = 2; context.stroke();
+    }
+    if (typeof context.setLineDash === 'function') context.setLineDash([]);
+    context.textBaseline = 'top';
+    for (const label of callouts.internalLabels) {
+      let y = label.y + insidePadding;
+      context.fillStyle = '#203f4c'; context.font = insideNameFont;
+      for (const line of label.nameLines) {
+        context.fillText(line, label.x + (label.width - context.measureText(line).width) / 2, y);
+        y += insideLineHeight;
+      }
+      context.font = insideDimensionFont;
+      for (const line of label.dimensionLines) {
+        context.fillText(line, label.x + (label.width - context.measureText(line).width) / 2, y);
+        y += insideLineHeight;
+      }
+    }
+    for (const label of callouts.labels) {
+      context.fillStyle = '#f5f8f9'; context.fillRect(label.x, label.y, label.width, label.height);
+      context.fillStyle = label.color; context.fillRect(label.x, label.y, 4, label.height);
+      const swatchX = label.x + label.width - 48, swatchY = label.y + padding + 10;
+      const dash = label.lineDash?.length ? label.lineDash : [48];
+      let cursor = swatchX, dashIndex = 0, draw = true;
+      while (cursor < label.x + label.width - padding) {
+        const length = Math.min(dash[dashIndex % dash.length], label.x + label.width - padding - cursor);
+        if (draw) context.fillRect(cursor, swatchY, length, 5);
+        cursor += length; dashIndex += 1; draw = !draw;
+      }
+      let y = label.y + padding;
+      context.font = nameFont; context.fillStyle = '#223c48';
+      for (const line of label.nameLines) {context.fillText(line, label.x + padding, y); y += lineHeight;}
+      context.font = dimensionFont; context.fillStyle = '#334f5b';
+      for (const line of label.dimensionLines) {context.fillText(line, label.x + padding, y); y += lineHeight;}
+    }
+  }
+  window.HOME_EXPORT_CALLOUTS = {mapMaxWidth, mapMaxWidthFor, layout, draw, prepareSvg};
+})();
+
+</script><script>
+/* Local PNG report text/layout, kept separate from project state and the SVG camera. */
+(() => {
+  'use strict';
+  const width = 2200, margin = 48;
+  const a4Width = 3508, a4Height = 2480, a4Margin = 72;
+  const cm = n => n == null ? '?' : (Math.round(n) / 10).toLocaleString('ko-KR', {maximumFractionDigits: 1});
+  const known = f => [f.widthMm, f.depthMm].every(n => Number.isFinite(n) && n > 0);
+  const verification = {unconfirmed: '미확인', 'plan-observed': '도면 관찰', 'field-measured': '현장 실측 입력'};
+  const coverage = {unregistered: '미등록', partial: '일부 등록', complete: '전체 등록 입력 (완전성 미검증)'};
+
+  function model(project, options, gaps) {
+    const scene = project.scenes.find(s => s.id === project.activeScene);
+    const excluded = project.furniture.filter(f => f.excludeFromMove);
+    const placed = project.furniture.filter(f => scene.placements[f.id] && !f.excludeFromMove);
+    const groups = [['walls', '벽'], ['fixedObstacles', '고정 설비'], ['doors', '문'], ['roomPolygons', '방 경계']];
+    const doorOpenings = new Map(project.geometry.doors.map(door => [door.id, window.HOME_GEOMETRY.doorOpening(door, project.geometry)]));
+    const summary = [
+      `${options.confirmed ? '사용자 확정 배치' : '잠정 배치'} · 확정은 이 PNG에 선택한 위치만 뜻하며 치수·안전·설치 검증이 아닙니다.`,
+      `축척: ${project.background.status === 'user-calibrated' ? '사용자 보정' : '잠정'} (${project.background.mmPerPx} mm/px) · 가로·세로·실제 현장 치수는 별도 확인해야 합니다.`,
+      ...groups.map(([key, label]) => {
+        const items = project.geometry[key];
+        return `${label}: 등록 ${items.length}개 · ${coverage[project.geometry.coverage[key]]} · 검사 제외 ${items.filter(g => !g.checkEnabled).length}개 · 치수 미확인 ${key === 'fixedObstacles' ? items.filter(g => !known(g)).length : 0}개 · 미확인 ${items.filter(g => g.verification === 'unconfirmed').length} / 도면 관찰 ${items.filter(g => g.verification === 'plan-observed').length} / 현장 실측 입력 ${items.filter(g => g.verification === 'field-measured').length}`;
+      }),
+      `문 입구 연결 미검증: ${[...doorOpenings.values()].filter(opening => !opening.linked).length}개. 벽 연결/개구부 일치는 실제 문틀·통행·반입 검증을 뜻하지 않습니다.`,
+      `가구: 등록 ${project.furniture.length}개 · 현재 배치 ${placed.length}개 · 미배치 ${project.furniture.length - placed.length - excluded.length}개 · 이사 제외 ${excluded.length}개 · 치수 누락 ${project.furniture.filter(f => !known(f)).length}개 · 치수 미확인 ${project.furniture.filter(f => !f.verified).length}개`,
+      '등록·검사 활성화·입력 치수 기준의 일부 평면 검사입니다. 숨김과 검사 제외는 별개입니다. 미등록 벽·문·미닫이문·손잡이·높이·통로·반입 동선·실측은 미검증이며 경고 0도 안전/설치 가능 보증이 아닙니다.',
+      '가구표의 희망 방은 실제 위치 판정이 아닙니다. 중심 X/Y는 원본 도면 좌상단 기준 cm, 회전은 도(°)입니다. 치수 없는 배치 가구는 표에만 기록하고 도면에는 그리지 않습니다.'
+    ];
+    const rows = placed.map(f => {
+      const p = scene.placements[f.id], room = project.rooms.find(r => r.id === f.targetRoom);
+      return [String(f.number).padStart(2, '0'), f.name, room ? `${room.name} / ${room.use}` : '미지정', `${cm(f.widthMm)} × ${cm(f.depthMm)} cm${known(f) ? '' : ' · 미확인 / 도면에 그리지 않음'}`, `X ${cm(p.xMm)} / Y ${cm(p.yMm)} cm · ${p.rotation}°`, f.verified ? '치수 사용자 확인' : '치수 미확인'];
+    });
+    const details = [];
+    if (options.gaps) {
+      details.push('선택 포함: 가구별 최단 벽/고정 설비 간격 · 본체 사이 직선 거리이며 통로 폭이 아닙니다. 검사 제외/치수 누락 설비, 문·방 경계·사용 여유·다른 가구는 대상에서 제외합니다. 숨김 벽/설비는 계산합니다.');
+      for (const f of placed) {
+        const gap = gaps[f.id];
+        details.push(`${String(f.number).padStart(2, '0')} ${f.name}: ${gap.text}${gap.targetName ? ' · 대상 ' + gap.targetName : ''}`);
+      }
+    }
+    if (options.unknowns) {
+      details.push('미확정 / 미배치 상세 목록');
+      for (const f of project.furniture.filter(f => !f.excludeFromMove)) {
+        const facts = [!known(f) && '폭/깊이 누락 (본체 미표시)', !f.verified && '치수 미확인', !scene.placements[f.id] && '현재 안 미배치'].filter(Boolean);
+        if (facts.length) details.push(`${String(f.number).padStart(2, '0')} ${f.name}: ${facts.join(' · ')}`);
+      }
+      for (const [key, label] of groups) for (const g of project.geometry[key]) {
+        const facts = [g.verification !== 'field-measured' && verification[g.verification], !g.checkEnabled && '검사 제외', key === 'fixedObstacles' && !known(g) && '폭/깊이 누락', key === 'doors' && !doorOpenings.get(g.id).linked && doorOpenings.get(g.id).reason].filter(Boolean);
+        if (facts.length) details.push(`${label} ${g.name}: ${facts.join(' · ')}`);
+      }
+    }
+    const access = project.geometry.roomPolygons.flatMap(r => r.accessZones || []);
+    summary.push(`수동 접근 검토 구역: 등록 ${access.length}개 · 검사 제외 ${access.filter(z => !z.checkEnabled).length}개 · 현장 실측 입력 ${access.filter(z => z.verification === 'field-measured').length}개. 필수 여유폭/실제 접근은 미검증입니다.`);
+    if (options.unknowns) for (const z of access) if (z.verification !== 'field-measured' || !z.checkEnabled) details.push(`접근 검토 구역 ${z.name}: ${verification[z.verification]}${z.checkEnabled ? '' : ' · 검사 제외'}`);
+    const callouts = options.callouts ? placed.filter(known).map(f => {
+      const p = scene.placements[f.id];
+      const callout = {id: f.id, number: f.number, name: f.name, dimensions: `${cm(f.widthMm)} × ${cm(f.depthMm)} cm`,
+        xMm: p.xMm, yMm: p.yMm, widthMm: f.widthMm, depthMm: f.depthMm, rotation: p.rotation};
+      if (options.nearLabels) callout.nearLabels = true;
+      return callout;
+    }) : [];
+    return {sceneId: scene.id, title: `Home Layout Lab | ${scene.name}`, summary, rows, details, callouts};
+  }
+
+  function wrap(context, text, maxWidth) {
+    const lines = [];
+    for (const paragraph of String(text).split('\n')) {
+      let line = '';
+      for (const char of paragraph) {
+        if (line && context.measureText(line + char).width > maxWidth) { lines.push(line); line = ''; }
+        line += char;
+      }
+      lines.push(line);
+    }
+    return lines;
+  }
+
+  function layout(context, report, mapHeight, geometry) {
+    const commands = [];
+    let y = margin;
+    const paragraph = (text, font = '22px sans-serif', color = '#334f5b', lineHeight = 31) => {
+      context.font = font;
+      const lines = wrap(context, text, width - margin * 2);
+      for (const line of lines) { commands.push({kind: 'text', text: line, x: margin, y, font, color}); y += lineHeight; }
+      y += 10;
+    };
+    paragraph(report.title, 'bold 33px sans-serif', '#223c48', 43);
+    for (const text of report.summary) paragraph(text);
+    const callouts = geometry && report.callouts?.length ? window.HOME_EXPORT_CALLOUTS.layout(context, report.callouts, geometry, y, wrap) : null;
+    const mapY = callouts ? callouts.mapY : y;
+    y += (callouts ? callouts.height : mapHeight) + 28;
+    paragraph('배치 가구표 · 번호는 도면과 대응 · 희망 방은 실제 위치 미검증', 'bold 26px sans-serif');
+    const columns = [90, 485, 370, 400, 465, 294];
+    const tableRow = (cells, heading = false) => {
+      const font = heading ? 'bold 22px sans-serif' : '22px sans-serif';
+      context.font = font;
+      const lines = cells.map((cell, i) => wrap(context, cell, columns[i] - 24));
+      const height = Math.max(...lines.map(l => l.length)) * 31 + 24;
+      commands.push({kind: 'rect', x: margin, y, w: width - margin * 2, h: height, color: heading ? '#e3ecef' : '#f5f7f8'});
+      let x = margin;
+      lines.forEach((cell, i) => { cell.forEach((text, line) => commands.push({kind: 'text', text, x: x + 12, y: y + 12 + line * 31, font, color: '#223c48'})); x += columns[i]; });
+      y += height + 2;
+    };
+    tableRow(['번호', '가구 이름', '희망 방 (위치 판정 아님)', '가로 W × 깊이 D', '중심 좌표 / 회전', '치수 확인 상태'], true);
+    for (const row of report.rows) tableRow(row);
+    if (!report.rows.length) paragraph('현재 안에 배치된 가구가 없습니다.');
+    y += 24;
+    for (const text of report.details) paragraph(text);
+    paragraph('PNG는 전달용 그림입니다. 개인 배치 JSON은 사진·A/B/C·공통 공간·출처를 보존하는 별도 백업입니다. 앱/Git 파일을 저장해도 현재 개인 배치가 백업되지는 않습니다.');
+    const height = Math.ceil(y + margin);
+    if (height > 30000 || width * height > 60000000) throw Error('PNG 보고서가 브라우저 캔버스 크기 제한을 넘습니다. 미확정 상세 목록을 끄거나 긴 설명을 줄인 뒤 다시 저장하세요. 내용은 잘라서 저장하지 않았습니다.');
+    return {width, height, mapY, mapHeight, commands, callouts};
+  }
+
+  function draw(context, page, image) {
+    context.fillStyle = 'white'; context.fillRect(0, 0, page.width, page.height);
+    context.drawImage(image, (page.width - image.width) / 2, page.mapY);
+    if (page.callouts) window.HOME_EXPORT_CALLOUTS.draw(context, page.callouts);
+    context.textBaseline = 'top';
+    for (const command of page.commands) {
+      context.fillStyle = command.color;
+      if (command.kind === 'rect') context.fillRect(command.x, command.y, command.w, command.h);
+      else { context.font = command.font; context.fillText(command.text, command.x, command.y); }
+    }
+  }
+
+  function shiftCallouts(callouts, deltaY) {
+    callouts.mapY += deltaY;
+    for (const label of callouts.labels) {
+      label.y += deltaY;
+      for (const point of label.points) point.y += deltaY;
+    }
+    for (const label of callouts.internalLabels) label.y += deltaY;
+    return callouts;
+  }
+
+  function layoutA4(context, report, mapHeight, geometry) {
+    const callouts = geometry && report.callouts?.length
+      ? window.HOME_EXPORT_CALLOUTS.layout(context, report.callouts, geometry, 0, wrap, a4Width)
+      : null;
+    const contentHeight = callouts ? callouts.height : mapHeight;
+    if (contentHeight + a4Margin * 2 > a4Height) {
+      throw Error('A4 도면 출력에 가구 범례가 모두 들어가지 않습니다. 범례를 끄거나 배치를 줄인 뒤 다시 저장하세요.');
+    }
+    const top = Math.round((a4Height - contentHeight) / 2);
+    if (callouts) shiftCallouts(callouts, top);
+    return {
+      width: a4Width,
+      height: a4Height,
+      mapX: callouts?.mapX ?? (a4Width - geometry.mapWidth) / 2,
+      mapY: callouts?.mapY ?? top,
+      mapWidth: geometry.mapWidth,
+      mapHeight,
+      commands: [],
+      callouts,
+      format: 'a4-landscape',
+    };
+  }
+  window.HOME_EXPORT_REPORT = {model, wrap, layout, layoutA4, draw, a4Width, a4Height};
+})();
+
+</script><script>
+/* Our Home Layout Lab - local-only 2D prototype.
+ * All physical dimensions and positions are stored in millimetres.
+ * An SVG viewBox is only a camera; it never changes furniture dimensions.
+ * The raster background is a visual reference, NOT collision geometry.
+ */
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const clone = value => JSON.parse(JSON.stringify(value));
+const KEY = 'home-layout-lab-public-v2:' + (typeof location !== 'undefined' ? location.pathname : '/').replace(/(?:index\.html)?$/, '');
+const V1_BACKUP_KEY = KEY + '-before-v2';
+const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = mm => mm == null ? '?' : (Math.round(mm) / 10).toLocaleString('ko-KR', {maximumFractionDigits:1});
+const uid = () => 'item-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7);
+const kinds = {bed:'침대',desk:'책상',sofa:'소파',storage:'수납',mat:'매트',tv:'TV / 가전',generic:'기타 가구',zone:'비워둘 공간'};
+const colors = {bed:'#b7cbdc',desk:'#bdcfc8',sofa:'#d3c4b5',storage:'#cbd0dd',mat:'#bddecf',tv:'#bbc6cb',generic:'#d4cdba',zone:'#eacb96'};
+const clearance = window.HOME_CLEARANCE;
+const clearanceBasisLabels = {unspecified:'근거 미지정',user:'사용자 선호 / 가정값',manufacturer:'제조사 설치 기준 (출처 입력)'};
+const clearanceInputId = key => key==='front'?'f-clearance':`f-clearance-${key}`;
+const clearanceSummary = f => `${clearanceBasisLabels[f.clearanceBasis??'unspecified']}${f.clearanceSource?' · '+f.clearanceSource:''}`;
+const hasBody = f => [f.widthMm,f.depthMm].every(n=>Number.isFinite(n)&&n>0);
+const checkKinds = {horizontal:'가로',vertical:'세로','other-room':'다른 방'};
+let project = clone(window.HOME_SEED), selected = null, mode = 'select', drag = null;
+let view = {x:0,y:0,w:1,h:1}, measure = [], checkDraft = null, past = [], future = [], errors = [], saveTimer;
+let saveBlocked = '', recoveryRaw = null, migrationRaw = null, toastTimer, search = '', roomFilter = '', photoTarget = null;
+let imageOperation = 0;
+const svg = $('plan');
+const MAX_IMAGE_DATA = 2500000;
+function validateBackground(bg) {
+  if (!bg || !['blank','upload'].includes(bg.kind) || ![bg.widthPx,bg.heightPx].every(n=>Number.isInteger(n)&&n>0&&n<=2400) || !Number.isFinite(bg.mmPerPx) || bg.mmPerPx<.1 || bg.mmPerPx>100 || !['reference','user-calibrated'].includes(bg.status)) throw Error('지원하지 않는 도면 크기 또는 축척입니다.');
+  if (bg.kind==='blank' ? bg.imageData!==null : typeof bg.imageData!=='string'||!/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(bg.imageData)||bg.imageData.length>MAX_IMAGE_DATA) throw Error('지원하지 않는 도면 이미지입니다.');
+  const c=bg.calibration;
+  if(c!==null && (!c || !Number.isFinite(c.lengthMm) || c.lengthMm<=0 || c.lengthMm>100000 || !Array.isArray(c.pointsPx) || c.pointsPx.length!==2 || !c.pointsPx.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite)&&p[0]>=0&&p[0]<=bg.widthPx&&p[1]>=0&&p[1]<=bg.heightPx) || Math.hypot(c.pointsPx[0][0]-c.pointsPx[1][0],c.pointsPx[0][1]-c.pointsPx[1][1])<1 || typeof c.note!=='string')) throw Error('축척 보정 기록이 올바르지 않습니다.');
+  if((bg.status==='user-calibrated')!==(c!==null))throw Error('축척 상태와 보정 기록이 일치하지 않습니다.');
+}
+function decodeImage(source) {
+  return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>img.naturalWidth&&img.naturalHeight?resolve(img):reject(Error('빈 이미지입니다.'));img.onerror=()=>reject(Error('이미지를 읽지 못했습니다.'));img.src=source;});
+}
+async function normalizePlan(file) {
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>20000000)throw Error('20MB 이하 JPG, PNG, WEBP 도면을 선택하세요.');
+  const bytes=new Uint8Array(await file.slice(0,12).arrayBuffer());
+  const png=bytes.slice(0,8).join(',')==='137,80,78,71,13,10,26,10',jpeg=bytes[0]===255&&bytes[1]===216&&bytes[2]===255,webp=String.fromCharCode(...bytes.slice(0,4))==='RIFF'&&String.fromCharCode(...bytes.slice(8,12))==='WEBP';
+  if(!(png||jpeg||webp))throw Error('PNG, JPG, WEBP 래스터 이미지만 사용할 수 있습니다.');
+  const url=URL.createObjectURL(file);
+  try {
+    const img=await decodeImage(url),canvas=document.createElement('canvas'),scale=Math.min(1,2400/Math.max(img.naturalWidth,img.naturalHeight));
+    canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));
+    const ctx=canvas.getContext('2d');if(!ctx)throw Error('이미지 캔버스를 만들 수 없습니다.');
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    let imageData=canvas.toDataURL('image/png');
+    if(imageData.length>MAX_IMAGE_DATA){
+      ctx.globalCompositeOperation='destination-over';ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height);
+      for(const quality of [.85,.7,.55,.4,.25]){imageData=canvas.toDataURL('image/jpeg',quality);if(imageData.length<=MAX_IMAGE_DATA)break;}
+    }
+    if(imageData.length>MAX_IMAGE_DATA)throw Error('도면 이미지가 너무 복잡합니다. 더 작은 이미지로 다시 시도하세요.');
+    return {kind:'upload',widthPx:canvas.width,heightPx:canvas.height,imageData,mmPerPx:1,status:'reference',calibration:null,validationLines:[]};
+  } finally {URL.revokeObjectURL(url);}
+}
+async function verifyPlanImage(bg) {
+  validateBackground(bg);
+  if(bg.imageData){const img=await decodeImage(bg.imageData);if(img.naturalWidth!==bg.widthPx||img.naturalHeight!==bg.heightPx)throw Error('도면 이미지와 저장된 크기가 다릅니다.');}
+}
+function workspaceRooms(bg) {
+  const rooms=clone(window.HOME_SEED.rooms);rooms[0].anchorPx=[bg.widthPx/2,bg.heightPx/2];rooms[0].labelPx=[bg.widthPx/2,bg.heightPx/2];return rooms;
+}
+function validateProject(p) {
+  const object = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+  const finite = (v, max=1000000) => typeof v === 'number' && Number.isFinite(v) && Math.abs(v) <= max;
+  const dim = v => v === null || (finite(v,50000) && v > 0);
+  const optionalText = v => v == null || typeof v === 'string';
+  const optionalFlag = v => v === undefined || typeof v === 'boolean';
+  if (!object(p) || ![1,2].includes(p.schemaVersion) || p.units !== 'mm' || !object(p.background) || !['blank','upload'].includes(p.background.kind) || !finite(p.background.widthPx,20000) || p.background.widthPx < 1 || !finite(p.background.heightPx,20000) || p.background.heightPx < 1 || !finite(p.background.mmPerPx,100) || p.background.mmPerPx < .1) throw Error('지원하지 않는 프로젝트 또는 축척입니다.');
+  validateBackground(p.background);
+  if(!Array.isArray(p.rooms)||p.rooms.length!==1||p.rooms[0]?.id!==window.HOME_SEED.rooms[0].id)throw Error('지원하지 않는 공간 목록입니다.');
+  if (!Array.isArray(p.furniture) || p.furniture.length > 150 || !Array.isArray(p.scenes) || p.scenes.length !== 3) throw Error('가구 목록이나 배치안 형식이 올바르지 않습니다.');
+  const ids = new Set();
+  for (const f of p.furniture) {
+    if (!object(f) || typeof f.id !== 'string' || !/^[a-zA-Z0-9_-]{1,90}$/.test(f.id) || ids.has(f.id) || Object.hasOwn(Object.prototype,f.id) || f.id === 'prototype' || !Number.isInteger(f.number) || f.number<1 || f.number>10000 || typeof f.name !== 'string' || f.name.length > 150 || typeof f.kind !== 'string' || !Object.hasOwn(kinds,f.kind) || !dim(f.widthMm) || !dim(f.depthMm) || !dim(f.heightMm) || !finite(f.clearanceFrontMm,10000) || f.clearanceFrontMm < 0) throw Error('잘못된 가구 데이터가 있습니다.');
+    if (![f.note,f.source,f.targetRoom,f.photo].every(optionalText) || !optionalFlag(f.verified) || !optionalFlag(f.excludeFromMove)) throw Error('잘못된 가구 설명 또는 확인 상태입니다.');
+    if (f.photo && (typeof f.photo !== 'string' || !/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(f.photo) || f.photo.length > 1500000)) throw Error('지원하지 않는 사진 데이터입니다.');
+    clearance.validate(f);
+    ids.add(f.id);
+  }
+  const sceneIds = new Set();
+  for (const s of p.scenes) {
+    if (!object(s) || !['A','B','C'].includes(s.id) || sceneIds.has(s.id) || typeof s.name !== 'string' || !object(s.placements)) throw Error('잘못된 배치안입니다.');
+    sceneIds.add(s.id);
+    for (const [id, q] of Object.entries(s.placements)) if (!ids.has(id) || !object(q) || !finite(q.xMm) || !finite(q.yMm) || !finite(q.rotation,3600) || !optionalFlag(q.locked)) throw Error('잘못된 위치 데이터입니다.');
+  }
+  if (!sceneIds.has(p.activeScene)) throw Error('현재 배치안을 찾을 수 없습니다.');
+  const backgroundWidth = p.background.widthPx, backgroundHeight = p.background.heightPx;
+  const lines = p.background.validationLines;
+  if (lines !== undefined) {
+    if (!Array.isArray(lines) || lines.length > 100) throw Error('축척 검증선은 100개 이하 목록이어야 합니다.');
+    const lineIds = new Set();
+    for (const line of lines) {
+      if (!object(line) || typeof line.id !== 'string' || !/^[a-zA-Z0-9_-]{1,90}$/.test(line.id) || lineIds.has(line.id) || typeof line.kind !== 'string' || !Object.hasOwn(checkKinds,line.kind) || !finite(line.lengthMm,100000) || line.lengthMm <= 0 || !['unconfirmed','confirmed'].includes(line.status) || typeof line.endpointReference !== 'string' || line.endpointReference.length > 500 || typeof line.source !== 'string' || line.source.length > 500 || !(line.toleranceMm === null || (finite(line.toleranceMm,100000) && line.toleranceMm >= 0))) throw Error('축척 검증선 정보가 올바르지 않습니다.');
+      if (!Array.isArray(line.pointsPx) || line.pointsPx.length !== 2 || !line.pointsPx.every(point=>Array.isArray(point)&&point.length===2&&finite(point[0],20000)&&point[0]>=0&&point[0]<=backgroundWidth&&finite(point[1],20000)&&point[1]>=0&&point[1]<=backgroundHeight) || Math.hypot(line.pointsPx[0][0]-line.pointsPx[1][0],line.pointsPx[0][1]-line.pointsPx[1][1]) < 1) throw Error('검증선 끝점은 도면 이미지 안의 서로 다른 두 점이어야 합니다.');
+      if (line.status === 'confirmed' && (!line.endpointReference.trim() || !line.source.trim() || line.toleranceMm === null)) throw Error('확인 상태에는 끝점 기준, 출처, 허용 오차가 필요합니다.');
+      lineIds.add(line.id);
+    }
+  }
+  window.HOME_GEOMETRY.migrate(p);
+  if(p.geometry.roomPolygons.some(r=>!window.HOME_SEED.rooms.some(room=>room.id===r.roomId)))throw Error('방 경계의 방 ID를 찾을 수 없습니다.');
+  // Room-use labels remain local template data, not imported executable markup.
+  p.rooms = workspaceRooms(p.background);
+  return p;
+}
+try {
+  const saved = localStorage.getItem(KEY);
+  if (saved !== null) {
+    try {
+      const parsed=JSON.parse(saved),legacy=parsed?.schemaVersion===1;
+      project=validateProject(parsed);
+      if(legacy){
+        recoveryRaw=saved;migrationRaw=saved;
+        try{
+          const backup=localStorage.getItem(V1_BACKUP_KEY);
+          if(backup===null)localStorage.setItem(V1_BACKUP_KEY,saved);
+          else if(backup!==saved)throw Error('다른 v1 백업이 이미 있습니다.');
+        }catch(e){saveBlocked='v1 원문 백업 필요 · 자동 저장 중지 → JSON 저장 필요';}
+      }
+    }
+    catch (e) {
+      recoveryRaw = saved;
+      saveBlocked = '기존 저장값 복구 필요 · 자동 저장 중지 → JSON 저장 필요';
+    }
+  }
+} catch (e) { saveBlocked = '기존 저장값 읽기 실패 · 자동 저장 중지 → JSON 저장 필요'; }
+function currentScene() { return project.scenes.find(s => s.id === project.activeScene); }
+function placements() { return currentScene().placements; }
+function item(id=selected) { return project.furniture.find(f => f.id === id); }
+function world() { const s=project.background.mmPerPx; return {w:project.background.widthPx*s,h:project.background.heightPx*s}; }
+function roomName(id) { const r=project.rooms.find(r=>r.id===id); return r ? `${r.name} / ${r.use}`.replace(/ \/ $/,'') : '미지정'; }
+function snap(n) { const g=Number($('snap').value); return Math.round(g ? Math.round(n/g)*g : n); }
+function notify(message) { $('toast').textContent=message; $('toast').classList.add('visible'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),4500); }
+function checkpoint() { imageOperation++; $('export-confirmed').checked=false; past.push(clone(project)); if(past.length>35) past.shift(); future=[]; }
+function writeProject() {
+  if (saveBlocked) { $('save-state').textContent=saveBlocked; return; }
+  try { localStorage.setItem(KEY,JSON.stringify(project)); $('save-state').textContent='이 브라우저에 저장됨'; }
+  catch(e) { $('save-state').textContent='자동 저장 불가 → JSON 저장 필요'; }
+}
+function persist() {
+  clearTimeout(saveTimer);
+  if (saveBlocked) { $('save-state').textContent=saveBlocked; return; }
+  $('save-state').textContent='변경 저장 중…';
+  saveTimer=setTimeout(writeProject,220);
+}
+function commit() { $('export-confirmed').checked=false; persist(); renderAll(); }
+function applyGeometry(geometry) {
+ const next=clone(project);next.geometry=geometry;validateProject(next);
+ checkpoint();project=next;commit();
+}
+const geometryEditor = window.HOME_GEOMETRY_EDITOR.create({getProject:()=>project,applyGeometry});
+const doorEditor = window.HOME_DOOR_EDITOR.create({getProject:()=>project,applyGeometry});
+const roomEditor = window.HOME_ROOM_EDITOR.create({getProject:()=>project,applyGeometry});
+function undo() { imageOperation++; if(!past.length)return; future.push(clone(project)); project=past.pop(); selected=null; setMode('select'); fit(); commit(); }
+function redo() { imageOperation++; if(!future.length)return; past.push(clone(project)); project=future.pop(); selected=null; setMode('select'); fit(); commit(); }
+function point(event) { const p=new DOMPoint(event.clientX,event.clientY); return p.matrixTransform(svg.getScreenCTM().inverse()); }
+function updateView() { svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`); }
+function fit() { const {w,h}=world(); view={x:-230,y:-260,w:w+460,h:h+520}; updateView(); }
+function zoom(f, p) { const {w}=world(); if(view.w*f < w*.18 || view.w*f>w*3)return; p=p||{x:view.x+view.w/2,y:view.y+view.h/2}; view={x:p.x+(view.x-p.x)*f,y:p.y+(view.y-p.y)*f,w:view.w*f,h:view.h*f}; updateView(); }
+function corners(f,p) {
+ const w=f.widthMm,d=f.depthMm,a=p.rotation*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
+ const pts=[[-w/2,-d/2],[w/2,-d/2],[w/2,d/2],[-w/2,d/2]];
+ return pts.map(([x,y])=>[p.xMm+x*c-y*s,p.yMm+x*s+y*c]);
+}
+// SAT: touching edges/corners and overlap of at most 0.5 mm on any axis are not collisions.
+function overlaps(a,b) {
+ for(const poly of [a,b]) for(let i=0;i<poly.length;i++) {
+  const p=poly[i],q=poly[(i+1)%poly.length],dx=q[0]-p[0],dy=q[1]-p[1],norm=Math.hypot(dx,dy);
+  if(norm<1e-6)continue; const ax=-dy/norm,ay=dx/norm;
+  const aa=a.map(p=>p[0]*ax+p[1]*ay),bb=b.map(p=>p[0]*ax+p[1]*ay);
+  if(Math.max(...aa)<=Math.min(...bb)+.5 || Math.max(...bb)<=Math.min(...aa)+.5)return false;
+ }
+ return true;
+}
+function gapTargets() {
+ return [
+  ...project.geometry.walls.filter(g=>g.checkEnabled).map(g=>({g,type:'wall',label:'벽',polygon:window.HOME_GEOMETRY.wallPolygon(g)})),
+  ...project.geometry.fixedObstacles.filter(g=>g.checkEnabled&&hasBody(g)).map(g=>({g,type:'fixed-obstacle',label:'고정 설비',polygon:corners(g,g)}))
+ ];
+}
+function nearestGap(id=selected) {
+ const unavailable=reason=>({state:'unavailable',distanceMm:null,targetId:null,reason});
+ const f=item(id),p=placements()[id];
+ if(!f)return unavailable('가구를 선택하세요.');
+ if(!hasBody(f))return unavailable('가구 폭/깊이 미확인 · 계산 불가');
+ if(!p)return unavailable('가구 미배치 · 계산 불가');
+ const body=corners(f,p);
+ let best=null;
+ for(const {g,type,label,polygon} of gapTargets()) {
+  const gap=window.HOME_GEOMETRY.polygonGap(body,polygon);
+  if(!best||gap.distanceMm<best.distanceMm||(gap.distanceMm===best.distanceMm&&gap.state==='overlap'&&best.state!=='overlap'))best={...gap,targetId:g.id,targetName:g.name,targetType:type,targetLabel:label};
+ }
+ return best||unavailable('계산 가능한 등록 벽/고정 설비 없음');
+}
+function gapValue(gap) {
+ if(gap.state==='unavailable')return gap.reason;
+ if(gap.state==='overlap')return '본체 겹침 · 간격 없음';
+ if(gap.state==='touching')return '접촉 (0cm)';
+ return gap.distanceMm<1?'분리 · < 0.1cm':`분리 · ${fmt(gap.distanceMm)}cm`;
+}
+function renderSelectedGap() {
+ const panel=$('selected-gap');if(!panel)return;
+ const gap=nearestGap(),geometry=project.geometry;
+ const excluded=[...geometry.walls,...geometry.fixedObstacles].filter(g=>!g.checkEnabled).length;
+ const unknown=geometry.fixedObstacles.filter(g=>!hasBody(g)).length;
+ panel.className=`info${gap.state==='overlap'?' warning':''}`;
+ panel.dataset.state=gap.state;
+ panel.innerHTML=`<b>선택 가구의 최단 평면 간격</b><div id="selected-gap-value">${esc(gapValue(gap))}</div>${gap.targetId?`<div>대상: ${esc(gap.targetName)} (${gap.targetLabel})</div>`:''}<p class="small">본체 외곽과 등록 벽 두께/고정 설비 본체 사이 최단 직선 거리 · 연결 통로 폭 아님</p><p class="small">등록 벽 ${geometry.walls.length}개 · 고정 설비 ${geometry.fixedObstacles.length}개 중 검사 제외 ${excluded}개, 치수 미확인 ${unknown}개 제외. 숨김 대상도 계산합니다. 미등록 벽·문·방 경계·사용 여유·다른 가구는 제외하며 실제 설치/통행은 미검증입니다.</p><p class="small">입력 치수 기준 · 0.5mm 이하의 작은 겹침은 기존 충돌 알림 없이 여기에 표시될 수 있습니다.</p>`;
+}
+function detect() {
+ const list=project.furniture.filter(f=>placements()[f.id]&&hasBody(f)); const result=[];
+ const zones=new Map(list.map(f=>[f.id,clearance.zones(f,placements()[f.id])]));
+ for(let i=0;i<list.length;i++) for(let j=i+1;j<list.length;j++) {
+  const a=list[i],b=list[j],pa=placements()[a.id],pb=placements()[b.id];
+  if(overlaps(corners(a,pa),corners(b,pb))) {
+   const mat=a.kind==='mat'||b.kind==='mat',zone=a.kind==='zone'||b.kind==='zone';
+   result.push({ids:[a.id,b.id],hard:!mat&&!zone,text:`${a.name} ↔ ${b.name}: ${mat?'매트/놀이공간 점유':zone?'비워둘 공간과 겹침':'본체 겹침'}`});
+  }
+  for(const [f,g,q] of [[a,b,pb],[b,a,pa]]) if(g.kind!=='mat')for(const zone of zones.get(f.id))if(overlaps(zone.points,corners(g,q)))result.push({ids:[f.id,g.id],type:'clearance',direction:zone.key,hard:false,text:`${f.name} ${zone.label} 여유 공간 (${fmt(zone.amountMm)}cm) ↔ ${g.name} · ${clearanceSummary(f)} · 입력값 기준`});
+ }
+ const geometry=gapTargets();
+ for(const f of list) for(const {g,type,label,polygon} of geometry) {
+  for(const zone of zones.get(f.id))if(overlaps(zone.points,polygon))result.push({ids:[f.id],geometryIds:[g.id],type:'clearance',direction:zone.key,hard:false,text:`${f.name} ${zone.label} 여유 공간 (${fmt(zone.amountMm)}cm) ↔ ${g.name} (${label}) · ${clearanceSummary(f)} · 입력값 기준 · 현장 설치 판정 아님`});
+  if(!overlaps(corners(f,placements()[f.id]),polygon))continue;
+  const reason=f.kind==='mat'?'매트/놀이공간 점유':f.kind==='zone'?'비워둘 공간 침범':'고체 본체 충돌';
+  const verification={unconfirmed:'미확인', 'plan-observed':'도면 관찰', 'field-measured':'현장 실측 입력'}[g.verification];
+  result.push({ids:[f.id],geometryIds:[g.id],type,hard:!['mat','zone'].includes(f.kind),text:`${f.name} ↔ ${g.name} (${label}): ${reason} · 입력 기준 (${label} ${verification}, 가구 치수 ${f.verified?'사용자 확인':'미확인'}) · 현장 설치 판정 아님`});
+ }
+ for(const door of project.geometry.doors.filter(g=>g.checkEnabled)) {
+  const polygon=window.HOME_DOOR_SWING.geometry(door).polygon;
+  for(const f of list) {
+   if(!overlaps(polygon,corners(f,placements()[f.id])))continue;
+   const reason=f.kind==='mat'?'매트/놀이공간 점유':f.kind==='zone'?'비워둘 공간 침범':'고체 본체 충돌';
+   result.push({ids:[f.id],geometryIds:[door.id],type:'door-swing',hard:!['mat','zone'].includes(f.kind),text:`${door.name} 문 회전 영역 ↔ ${f.name}: ${reason} · 입력 기준 · 현장 설치 판정 아님`});
+  }
+  for(const g of project.geometry.fixedObstacles.filter(g=>g.checkEnabled&&hasBody(g))) {
+   if(overlaps(polygon,corners(g,g)))result.push({ids:[],geometryIds:[door.id,g.id],type:'door-swing',hard:true,text:`${door.name} 문 회전 영역 ↔ ${g.name} (고정 설비): 고체 본체 충돌 · 입력 기준 · 현장 설치 판정 아님`});
+  }
+ }
+ for(const boundary of project.geometry.roomPolygons.filter(r=>r.checkEnabled)) {
+  for(const f of list.filter(f=>f.targetRoom===boundary.roomId)) {
+   if(window.HOME_ROOM_BOUNDARY.contains(boundary.pointsMm,corners(f,placements()[f.id])))continue;
+   result.push({ids:[f.id],geometryIds:[boundary.id],type:'room-boundary',hard:!['mat','zone'].includes(f.kind),text:`${f.name} ↔ ${boundary.name}: 희망 방 경계 밖으로 본체 일부가 나감 · 입력 기준 · 실제 방/설치 판정 아님`});
+  }
+ }
+ for(const room of project.geometry.roomPolygons)for(const zone of (room.accessZones||[]).filter(z=>z.checkEnabled)) {
+  for(const f of list)if(overlaps(zone.pointsMm,corners(f,placements()[f.id])))result.push({ids:[f.id],geometryIds:[room.id,zone.id],type:'access-zone',hard:false,text:`${f.name} ↔ ${zone.name}: 수동 지정 접근 검토 구역 점유 · 필수 여유폭/실제 접근 미검증`});
+ }
+ return result;
+}
+function svgContent(exporting=false) {
+ const {w,h}=world(),scale=project.background.mmPerPx,opacity=Number($('opacity').value)/100;
+ const parts=[`<rect x="0" y="0" width="${w}" height="${h}" fill="#f4f7f7"/>`];
+ if(project.background.imageData)parts.push(`<image href="${esc(project.background.imageData)}" x="0" y="0" width="${w}" height="${h}" opacity="${opacity}"/>`);
+ if($('show-labels').checked)for(const r of project.rooms){const x=r.labelPx[0]*scale,y=r.labelPx[1]*scale,label=`${r.name}${r.use?' / '+r.use:''}`; parts.push(`<g pointer-events="none"><rect x="${x-65}" y="${y-180}" width="${label.length*148+140}" height="270" rx="50" fill="white" fill-opacity=".94"/><text x="${x}" y="${y+10}" font-family="sans-serif" font-weight="700" font-size="190" fill="#34545f">${esc(label)}</text></g>`);}
+ parts.push(roomEditor.svgContent(),geometryEditor.svgContent(),doorEditor.svgContent());
+ const ordered=project.furniture.filter(f=>placements()[f.id]&&f.widthMm&&f.depthMm).sort((a,b)=>({mat:0,zone:1}[a.kind]??2)-({mat:0,zone:1}[b.kind]??2));
+ for(const f of ordered){
+  const p=placements()[f.id],rw=f.widthMm,rh=f.depthMm,isSelected=!exporting&&f.id===selected;
+  const hard=errors.some(e=>e.hard&&e.ids.includes(f.id)),soft=errors.some(e=>!e.hard&&e.ids.includes(f.id));
+  const stroke=hard?'#b73f3a':isSelected?'#125e78':soft?'#ac7329':'#617986';
+  const pw=(p.rotation%180===0?rw:rh),small=pw<800,font=Math.min(185,Math.max(95,pw/8));
+  parts.push(`<g class="piece ${p.locked?'locked':''}" data-id="${f.id}"><g transform="translate(${p.xMm} ${p.yMm}) rotate(${p.rotation})">`);
+  if($('show-clearance').checked)for(const zone of clearance.zones(f,{xMm:0,yMm:0,rotation:0})) {
+   const x=zone.points.reduce((n,p)=>n+p[0],0)/4,y=zone.points.reduce((n,p)=>n+p[1],0)/4;
+   parts.push(`<g data-clearance-direction="${zone.key}" pointer-events="none"><title>${esc(`${f.name} ${zone.label} 여유 ${fmt(zone.amountMm)}cm · ${clearanceSummary(f)} · 입력값 기준`)}</title><polygon points="${zone.points.map(p=>p.join(',')).join(' ')}" fill="#eacb96" fill-opacity=".15" stroke="#b2833b" stroke-dasharray="70 50" stroke-width="18"/><text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="140" fill="#8d692e">${zone.label} 여유 ${fmt(zone.amountMm)}cm</text></g>`);
+  }
+  parts.push(`<rect x="${-rw/2}" y="${-rh/2}" width="${rw}" height="${rh}" rx="${f.kind==='mat'?60:25}" fill="${colors[f.kind]}" fill-opacity="${f.kind==='zone'?.25:f.kind==='mat'?.5:.91}" stroke="${stroke}" stroke-width="${isSelected?42:hard?34:19}" ${f.kind==='zone'?'stroke-dasharray="80 50"':''}/>`);
+  if(f.kind==='bed')parts.push(`<rect x="${-rw*.39}" y="${-rh*.43}" width="${rw*.78}" height="${rh*.18}" rx="50" fill="white" fill-opacity=".45" stroke="#829aac" stroke-width="12" pointer-events="none"/>`);
+  if(f.kind==='sofa')parts.push(`<rect x="${-rw*.45}" y="${-rh*.43}" width="${rw*.9}" height="${rh*.22}" rx="30" fill="white" fill-opacity=".45" pointer-events="none"/>`);
+  if(!['mat','zone'].includes(f.kind))parts.push(`<line x1="${-rw*.25}" y1="${rh/2-55}" x2="${rw*.25}" y2="${rh/2-55}" stroke="${stroke}" stroke-width="25" pointer-events="none"/>`);
+  if(isSelected)parts.push(`<rect x="${-rw/2-50}" y="${-rh/2-50}" width="${rw+100}" height="${rh+100}" fill="none" stroke="#125e78" stroke-width="16" stroke-dasharray="65 50" pointer-events="none"/>`);
+  const showExportLabel = !(exporting && f.excludeFromMove);
+  if(showExportLabel) {
+   parts.push(`</g><text x="${p.xMm}" y="${p.yMm-30}" text-anchor="middle" font-family="sans-serif" font-size="${font}" font-weight="700" fill="#203f4c" pointer-events="none">${exporting||small?String(f.number).padStart(2,'0'):esc(f.number+'. '+f.name)}</text>`);
+   if(!exporting&&!small)parts.push(`<text x="${p.xMm}" y="${p.yMm+font*1.12}" text-anchor="middle" font-family="sans-serif" font-size="${font*.85}" fill="#375461" pointer-events="none">${fmt(rw)} × ${fmt(rh)} cm${p.locked?' [잠금]':''}</text>`);
+  } else parts.push('</g>');
+  parts.push('</g>');
+ }
+ if(!exporting) {
+  const gap=nearestGap();
+  if(gap.from&&gap.to) {
+   const [a,b]=[gap.from,gap.to];
+   parts.push(`<g id="selected-gap-overlay" data-state="${gap.state}" data-target-id="${esc(gap.targetId)}" pointer-events="none"><line data-from="${a.join(',')}" data-to="${b.join(',')}" x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#125e78" stroke-width="22" stroke-dasharray="45 25"/><circle cx="${a[0]}" cy="${a[1]}" r="30" fill="#125e78"/><circle cx="${b[0]}" cy="${b[1]}" r="30" fill="#125e78"/><text x="${(a[0]+b[0])/2}" y="${(a[1]+b[1])/2-70}" text-anchor="middle" font-size="140" fill="#125e78" stroke="white" stroke-width="28" paint-order="stroke">${esc(gapValue(gap))}</text></g>`);
+  }
+ }
+ if(!exporting)for(const [i,line]of scaleLines().entries()){const [a,b]=line.pointsPx.map(p=>p.map(n=>n*scale));parts.push(`<g class="scale-check-line" pointer-events="none"><line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#995d16" stroke-width="22" stroke-dasharray="55 35"/><text x="${(a[0]+b[0])/2}" y="${(a[1]+b[1])/2-90}" text-anchor="middle" font-size="150" fill="#995d16" stroke="white" stroke-width="35" paint-order="stroke">비교 ${i+1}</text></g>`);}
+ if(!exporting&&measure.length){for(const p of measure)parts.push(`<circle cx="${p.x}" cy="${p.y}" r="65" fill="#226e80" stroke="white" stroke-width="20" pointer-events="none"/>`);if(measure.length===2){const[a,b]=measure,dist=Math.hypot(a.x-b.x,a.y-b.y);parts.push(`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#226e80" stroke-width="27" stroke-dasharray="80 40" pointer-events="none"/><text x="${(a.x+b.x)/2}" y="${(a.y+b.y)/2-120}" text-anchor="middle" font-family="sans-serif" font-size="200" font-weight="bold" fill="#185463" stroke="white" stroke-width="45" paint-order="stroke" pointer-events="none">${fmt(dist)} cm (현재 축척)</text>`);}}
+ parts.push(`<g pointer-events="none"><line x1="${520}" y1="${h-210}" x2="${1520}" y2="${h-210}" stroke="#3c5761" stroke-width="28"/><line x1="520" y1="${h-280}" x2="520" y2="${h-140}" stroke="#3c5761" stroke-width="20"/><line x1="1520" y1="${h-280}" x2="1520" y2="${h-140}" stroke="#3c5761" stroke-width="20"/><text x="1020" y="${h-330}" text-anchor="middle" font-size="155" font-family="sans-serif" fill="#3c5761">1m | ${project.background.status==='user-calibrated'?'사용자 보정':'잠정 축척'}</text></g>`);
+ return parts.join('');
+}
+function renderCanvas(){ errors=detect(); svg.innerHTML=svgContent(); updateView(); $('status').textContent=`${Object.keys(placements()).length}개 배치 / ${project.furniture.length}개 등록 | 겹침 알림 ${errors.length}건`; if($('onboarding'))$('onboarding').hidden=!!project.background.imageData; if($('background-status'))$('background-status').textContent=project.background.imageData?(project.background.status==='user-calibrated'?'사용자 축척 보정됨 · 현장 확인 필요':'도면 업로드됨 · 축척 보정 필요'):'도면 없음 · 이미지를 올려 시작하세요'; renderWarnings(); renderSelectedGap(); }
+function renderWarnings(){
+ $('warnings').innerHTML=errors.length?errors.map(e=>`<div class="warning-row ${e.hard?'hard':''}" data-warning-type="${e.type||'body'}"${e.direction?` data-clearance-direction="${e.direction}"`:''}>${esc(e.text)}</div>`).join(''):'<p class="small">검사 가능한 입력에서 겹침 알림 없음.<br>미확인·제외 대상은 검사 미완료이며 설치 가능 판정이 아닙니다.</p>';
+ const status=[['walls','벽'],['fixedObstacles','고정 설비']].map(([key,label])=>{
+  const objects=project.geometry[key],excluded=objects.filter(g=>!g.checkEnabled).length;
+  const unknown=objects.filter(g=>g.checkEnabled&&key==='fixedObstacles'&&!hasBody(g)).length;
+  return `${label} ${objects.length?'일부 등록':'미등록'}: 검사 대상 ${objects.length-excluded-unknown}개 / 제외 ${excluded}개 / 치수 미확인 ${unknown}개`;
+ });
+ const unknownFurniture=project.furniture.filter(f=>!hasBody(f));
+ status.push(`가구 치수 미확인 ${unknownFurniture.length}개 (현재 배치 ${unknownFurniture.filter(f=>placements()[f.id]).length}개)${unknownFurniture.length ? ' · 본체 검사 미완료' : ''}`);
+ const doors=project.geometry.doors,enabled=doors.filter(d=>d.checkEnabled).length,incomplete=doors.filter(d=>!window.HOME_GEOMETRY.doorOpening(d,project.geometry).linked).length;
+ status.push(`여닫이문 ${doors.length?'일부 등록':'미등록'}: 검사 대상 ${enabled}개 / 제외 ${doors.length-enabled}개 / 입구 연결 미완료 ${incomplete}개`);
+ const boundaries=project.geometry.roomPolygons,activeBoundaries=boundaries.filter(r=>r.checkEnabled);
+ const unchecked=project.furniture.filter(f=>placements()[f.id]&&!activeBoundaries.some(r=>r.roomId===f.targetRoom)).length;
+ status.push(`방 경계 ${boundaries.length?'일부 등록':'미등록'}: 검사 대상 ${activeBoundaries.length}개 / 제외 ${boundaries.length-activeBoundaries.length}개 · 희망 방 경계 없는 배치 ${unchecked}개 미검증 · 오목 경계 검증 불가`);
+ const access=boundaries.flatMap(r=>r.accessZones||[]);
+ if(access.length)status.push(`수동 접근 검토 구역 ${access.filter(z=>z.checkEnabled).length}개 검사 / ${access.filter(z=>!z.checkEnabled).length}개 제외 · 실제 접근 여유 미검증`);
+ status.push('사용 여유는 앞·뒤·좌·우 입력값만 검사 · 0/빈칸은 미지정·검사 제외이며 안전 판정 아님');
+ status.push('등록된 입력만 검사 · 숨김도 검사 유지 · 미등록 문·미닫이문·손잡이·높이·복도·반입 동선 미검증 · 설치 보증 아님');
+ $('geometry-status').textContent=status.join(' · ');
+}
+function scaleLines(){return project.background.validationLines || [];}
+function scaleResult(line){const [a,b]=line.pointsPx,measured=Math.hypot(a[0]-b[0],a[1]-b[1])*project.background.mmPerPx;return {measured,residual:measured-line.lengthMm,percent:(measured-line.lengthMm)/line.lengthMm*100};}
+function renderScaleChecks(){
+ const lines=scaleLines(),number=(n,digits=1)=>n.toLocaleString('ko-KR',{maximumFractionDigits:digits}),signed=(n,digits=1)=>(n>=0?'+':'')+number(n,digits);
+ const checked=lines.filter(line=>line.status==='confirmed'&&line.toleranceMm!==null&&Math.abs(scaleResult(line).residual)<=line.toleranceMm);
+ const covered=Object.keys(checkKinds).filter(kind=>checked.some(line=>line.kind===kind));
+ const consistent=new Set(checked.map(line=>line.endpointReference.trim())).size===1;
+ $('scale-checks-summary').textContent=covered.length===3&&consistent?'세 구간 비교 기록 있음 · 현장 실측 별도 확인':`교차 확인 미완료 · 확인된 구간 ${covered.length}/3`;
+ $('scale-checks-list').innerHTML=lines.length?lines.map(line=>{
+  const r=scaleResult(line),tolerance=line.toleranceMm===null?'허용 오차 미입력':`허용 ±${number(line.toleranceMm)} mm · ${Math.abs(r.residual)<=line.toleranceMm?'범위 안':'초과'}`;
+  return `<div class="scale-check-row"><div class="row"><b>${checkKinds[line.kind]}</b><span class="badge ${line.status==='confirmed'?'':'pending'}">${line.status==='confirmed'?'출처 확인':'확인 전'}</span><button type="button" data-remove-check="${esc(line.id)}">삭제</button></div><p>현재 축척 ${number(r.measured)} mm / 알려진 길이 ${number(line.lengthMm)} mm</p><p class="check-residual">차이 ${signed(r.residual)} mm (${signed(r.percent,2)}%) · ${tolerance}</p><p>끝점 기준: ${esc(line.endpointReference)||'확인 전'}<br>출처: ${esc(line.source)||'확인 전'}</p></div>`;
+ }).join(''):'<p class="small">저장된 검증선이 없습니다. 가로·세로·다른 방 구간을 각각 대조하세요.</p>';
+ $('scale-check-form').hidden=!checkDraft;
+}
+function renderCatalog(){
+ const list=project.furniture.filter(f=>(!search||f.name.includes(search))&&(!roomFilter||f.targetRoom===roomFilter));
+ $('inventory-count').textContent=`${project.furniture.length}개`;
+ $('catalog').innerHTML=list.map(f=>`<div class="card ${selected===f.id?'selected':''}" data-id="${f.id}" draggable="true" tabindex="0" role="button" aria-label="${esc(f.name)} 선택">${f.photo?`<img class="card-photo" src="${f.photo}" alt="${esc(f.name)}">`:`<div class="card-photo">${String(f.number).padStart(2,'0')}</div>`}<div class="card-content"><div class="card-title">${esc(f.name)}</div><div class="card-detail">${fmt(f.widthMm)} × ${fmt(f.depthMm)} cm</div><div class="card-detail">${esc(project.rooms.find(r=>r.id===f.targetRoom)?.name||'미지정')} <span class="badge ${placements()[f.id]?'':'pending'}">${placements()[f.id]?'배치됨':'미배치'}</span></div></div></div>`).join('');
+}
+function renderInspector(){
+ const f=item(),p=f&&placements()[f.id];
+ if(!f){$('inspector').innerHTML=`<div id="selected-gap"></div><div class="empty"><h2>가구를 골라 주세요</h2><p>도면 위 가구 또는 왼쪽 카드를 선택하면 치수와 사진을 수정할 수 있습니다.</p><div class="info warning">가구를 직접 추가하고 폭·깊이·사진을 입력하세요. 치수가 없는 항목은 도면에 그리지 않습니다.</div><p>현재 시작안은 빈 프로젝트이며, 사용자가 올린 입력만 저장합니다.</p></div>`;renderSelectedGap();return;}
+ const cm=v=>v==null?'':Math.round(v)/10;
+ $('inspector').innerHTML=`<div class="section-head"><h2>${String(f.number).padStart(2,'0')} | 가구 편집</h2><span class="badge ${f.verified?'':'pending'}">${f.verified?'사용자 확인':'치수 확인 전'}</span></div><div id="selected-gap"></div><form id="item-form" class="inspector-form"><label for="f-name">가구 이름</label><input id="f-name" value="${esc(f.name)}" maxlength="80" required><div class="field-grid"><div><label for="f-width">가로 W (cm)</label><input id="f-width" type="number" step=".1" min=".1" max="5000" value="${cm(f.widthMm)}" placeholder="확인 필요"></div><div><label for="f-depth">깊이 D (cm)</label><input id="f-depth" type="number" step=".1" min=".1" max="5000" value="${cm(f.depthMm)}" placeholder="확인 필요"></div><div><label for="f-height">높이 H (cm, 선택)</label><input id="f-height" type="number" step=".1" min=".1" max="5000" value="${cm(f.heightMm)}"></div></div><h3 style="margin-top:12px">사용 여유 (가구 기준)</h3><p class="small">앞쪽(+Y, 진한 선) 기준 앞·뒤·좌·우가 가구와 함께 회전합니다. 0/빈칸은 미지정·검사 제외이며 확보됨을 뜻하지 않습니다.</p><div class="field-grid">${clearance.directions.map(({key,field,label})=>`<div><label for="${clearanceInputId(key)}">${label} 방향 사용 여유 (cm)</label><input id="${clearanceInputId(key)}" type="number" step="any" min="0" max="1000" value="${f[field]==null?'':f[field]/10}" placeholder="미지정"></div>`).join('')}</div><label for="f-clearance-basis">네 방향 여유의 입력 근거</label><select id="f-clearance-basis">${Object.entries(clearanceBasisLabels).map(([value,label])=>`<option value="${value}" ${(f.clearanceBasis??'unspecified')===value?'selected':''}>${label}</option>`).join('')}</select><label for="f-clearance-source">여유 출처 / 가정 (제조사 기준 선택 시 필수)</label><textarea id="f-clearance-source" maxlength="500">${esc(f.clearanceSource??'')}</textarea><p class="small">입력한 값만 검사하며 제조사 기준을 자동 제공하거나 확인하지 않습니다.</p><label for="f-kind">물체 구분</label><select id="f-kind">${Object.entries(kinds).map(([id,name])=>`<option value="${id}" ${f.kind===id?'selected':''}>${name}</option>`).join('')}</select><label for="f-room">희망 방 (물리적 위치는 직접 확인)</label><select id="f-room">${project.rooms.map(r=>`<option value="${r.id}" ${f.targetRoom===r.id?'selected':''}>${esc(roomName(r.id))}</option>`).join('')}</select><label for="f-note">메모</label><textarea id="f-note" maxlength="500">${esc(f.note)}</textarea><label><input id="f-exclude-from-move" type="checkbox" ${f.excludeFromMove?'checked':''}> 이사하지 않음 (인쇄본에서 이름표 숨김)</label><label><input id="f-verified" type="checkbox" ${f.verified?'checked':''}> 치수를 내가 확인했음</label><button type="submit" class="primary" style="width:100%;margin-top:10px">치수 / 정보 적용</button><div class="source-note">${esc(f.source)}<br>짧은 진한 선은 가구의 앞쪽을 표시합니다.</div><div class="row"><button type="button" id="place">${p?'희망 방 중심으로':'도면에 놓기'}</button><button type="button" id="rotate" ${p?'':'disabled'}>90° 회전</button></div><div class="row"><button type="button" id="lock" ${p?'':'disabled'}>${p?.locked?'잠금 해제':'위치 잠금'}</button><button type="button" id="unplace" ${p?'':'disabled'}>배치 해제</button></div>${p?`<div class="info">중심 좌표 X ${fmt(p.xMm)} / Y ${fmt(p.yMm)} cm<br>회전 ${p.rotation}° | 위치는 도면 좌상단 기준</div>`:''}${f.photo?`<img class="photo-box" src="${f.photo}" alt="${esc(f.name)} 참고 사진">`:''}<div class="row"><button type="button" id="photo-upload">${f.photo?'사진 바꾸기':'가구 사진 추가'}</button>${f.photo?'<button type="button" id="photo-remove">사진 제거</button>':''}</div><div class="row"><button type="button" id="duplicate">가구 1개 더 등록</button><button type="button" class="danger" id="delete-item">목록에서 삭제</button></div></form>`;
+ renderSelectedGap();
+ $('item-form').onsubmit=e=>{e.preventDefault();applyForm();};
+ $('place').onclick=()=>place(f.id);
+ $('rotate').onclick=rotate; $('lock').onclick=()=>{if(!p)return;checkpoint();p.locked=!p.locked;commit();}; $('unplace').onclick=unplace;
+ $('photo-upload').onclick=()=>{photoTarget=f.id;$('photo-file').click();};
+ if($('photo-remove'))$('photo-remove').onclick=()=>{checkpoint();f.photo=null;commit();};
+ $('duplicate').onclick=()=>{checkpoint();const n=clone(f);n.id=uid();n.number=Math.max(0,...project.furniture.map(f=>f.number))+1;n.name=f.name+' (추가)';project.furniture.push(n);selected=n.id;commit();};
+ $('delete-item').onclick=()=>{if(!confirm(`${f.name}을 모든 배치안과 가구 목록에서 삭제할까요?`))return;checkpoint();project.furniture=project.furniture.filter(x=>x.id!==f.id);for(const s of project.scenes)delete s.placements[f.id];selected=null;commit();};
+}
+function applyForm(){
+ const f=item();if(!f)return;
+ const v=id=>$(id).value.trim()===''?null:Math.round(Number($(id).value)*10);
+ const w=v('f-width'),d=v('f-depth'),h=v('f-height'),changes={};
+ for(const {key,field} of clearance.directions) {
+  const input=$(clearanceInputId(key));
+  if(input.validity.badInput){notify('사용 여유 범위를 확인해 주세요.');return;}
+  if(input.value!==input.defaultValue)changes[field]=input.value.trim()===''?(key==='front'?0:null):Number(input.value)*10;
+ }
+ if($('f-clearance-basis').value!==(f.clearanceBasis??'unspecified'))changes.clearanceBasis=$('f-clearance-basis').value;
+ if($('f-clearance-source').value!==(f.clearanceSource??''))changes.clearanceSource=$('f-clearance-source').value;
+ try{clearance.validate({...f,...changes});}catch(error){notify(error.message);return;}
+ if([w,d,h].some(n=>n!==null&&(!Number.isFinite(n)||n<=0||n>50000))){notify('치수 범위를 확인해 주세요.');return;}
+ checkpoint();Object.assign(f,{name:$('f-name').value.trim()||f.name,widthMm:w,depthMm:d,heightMm:h,...changes,kind:$('f-kind').value,targetRoom:$('f-room').value,note:$('f-note').value,excludeFromMove:$('f-exclude-from-move').checked,verified:$('f-verified').checked});
+ if(!w||!d)for(const s of project.scenes)delete s.placements[f.id];
+ commit();notify('가구 정보를 적용했습니다. 실제 크기는 모든 배치안에 함께 적용됩니다.');
+}
+function renderAll(){renderCanvas();renderCatalog();renderInspector();renderScaleChecks();geometryEditor.render();doorEditor.render();roomEditor.render();$('undo').disabled=!past.length;$('redo').disabled=!future.length;for(const b of document.querySelectorAll('[data-scene]'))b.classList.toggle('active',b.dataset.scene===project.activeScene);$('canvas-caption').innerHTML=`<b>${esc(currentScene().name)}</b>${mode==='crosscheck'?'원본 도면 안에서 비교할 두 끝점을 클릭하세요. 축척은 바뀌지 않습니다.':mode==='calibrate'?'길이를 아는 두 끝점을 클릭한 뒤 실제 길이를 입력하세요.':mode==='measure'?'두 점을 클릭하면 현재 축척으로 거리를 표시합니다.':mode==='pan'?'가구 위에서도 드래그해 화면 이동 · 전체 맞춤으로 가운데 정렬':'빈 도면을 드래그해 화면 이동 · 전체 맞춤으로 가운데 정렬<br>시작 스케치 / 등록 벽·설비·문 열림 검사 · 미등록 대상·동선 미검증'}`;}
+function select(id){selected=id;renderAll();}
+function place(id,pos){const f=item(id);if(!f)return;if(!f.widthMm||!f.depthMm){select(id);notify('가로와 깊이를 입력하고 적용한 뒤 배치해 주세요.');return;}if(placements()[id]?.locked){notify('위치 잠금을 먼저 해제하세요.');return;}checkpoint();if(!pos){const r=project.rooms.find(r=>r.id===f.targetRoom)||project.rooms[0];pos={x:r.anchorPx[0]*project.background.mmPerPx,y:r.anchorPx[1]*project.background.mmPerPx};}placements()[id]={xMm:snap(pos.x),yMm:snap(pos.y),rotation:placements()[id]?.rotation||0,locked:false};selected=id;commit();}
+function rotate(){const p=placements()[selected];if(!p)return;if(p.locked){notify('위치 잠금을 먼저 해제하세요.');return;}checkpoint();p.rotation=(p.rotation+90)%360;commit();}
+function unplace(){if(!placements()[selected])return;if(placements()[selected].locked){notify('위치 잠금을 먼저 해제하세요.');return;}checkpoint();delete placements()[selected];commit();}
+function setMode(m){const pointerId=drag?.pointerId;mode=m;measure=[];checkDraft=null;drag=null;if(pointerId!==undefined&&svg.hasPointerCapture(pointerId))svg.releasePointerCapture(pointerId);svg.setAttribute('class','mode-'+m);for(const b of document.querySelectorAll('[data-mode]'))b.classList.toggle('active',b.dataset.mode===m);renderAll();}
+svg.addEventListener('pointerdown',e=>{
+ if(e.button!==0||drag)return;const p=point(e),el=e.target.closest('[data-id]'),id=el?.dataset.id;
+ if(mode==='calibrate'||mode==='measure'||mode==='crosscheck'){
+  if(mode==='crosscheck'&&(p.x<0||p.y<0||p.x>world().w||p.y>world().h)){notify('원본 도면 이미지 안의 점을 선택하세요.');return;}
+  if(measure.length===2)measure=[];measure.push({x:p.x,y:p.y});renderCanvas();
+  if(mode==='crosscheck'&&measure.length===2){
+   const scale=project.background.mmPerPx;
+   if(Math.hypot(measure[0].x-measure[1].x,measure[0].y-measure[1].y)<scale){notify('서로 다른 두 점을 선택하세요.');measure=[];renderCanvas();return;}
+   checkDraft=measure.map(p=>[p.x/scale,p.y/scale]);$('scale-check-form').reset();$('scale-check-error').textContent='';renderScaleChecks();$('scale-checks-dialog').showModal();$('check-length').focus();
+  }
+  if(mode==='calibrate'&&measure.length===2){const [a,b]=measure,dist=Math.hypot(a.x-b.x,a.y-b.y);if(dist<30){notify('서로 충분히 떨어진 두 점을 선택하세요.');measure=[];return;}
+   setTimeout(()=>{const raw=prompt('선택한 두 점 사이 실제 길이를 cm로 입력하세요.\n예: 거실 가로 450\n선의 끝점이 내측 벽면인지 기준축인지 구분해야 합니다.','450');if(raw===null){setMode('select');return;}const real=Number(raw)*10;if(!Number.isFinite(real)||real<=0||real>100000){notify('유효한 길이를 입력하세요.');measure=[];renderCanvas();return;}
+   const old=project.background.mmPerPx,factor=real/dist,next=old*factor;if(next<.1||next>100){notify('축척 범위가 비정상입니다.');return;}checkpoint();project.background.mmPerPx=next;project.background.status='user-calibrated';project.background.calibration={lengthMm:real,pointsPx:[[a.x/old,a.y/old],[b.x/old,b.y/old]],note:'사용자가 선택한 두 점. 수직 치수 및 현장 실측은 별도 확인.'};for(const s of project.scenes)for(const q of Object.values(s.placements)){q.xMm=Math.round(q.xMm*factor);q.yMm=Math.round(q.yMm*factor);}fit();setMode('select');commit();notify('배경 축척을 바꿨습니다. 가구의 실제 가로/깊이는 유지됩니다.');},50);
+  }return;
+ }
+ if(mode==='pan'||e.altKey||(mode==='select'&&!id)){
+  if(mode==='select'&&!id&&!e.altKey){selected=null;renderAll();}
+  drag={type:'pan',pointerId:e.pointerId,cx:e.clientX,cy:e.clientY,start:{...view},scale:svg.getScreenCTM().a};svg.classList.add('is-panning');svg.setPointerCapture(e.pointerId);return;
+ }
+ if(id){selected=id;const q=placements()[id];if(!q.locked){checkpoint();drag={type:'item',pointerId:e.pointerId,id,dx:p.x-q.xMm,dy:p.y-q.yMm};svg.setPointerCapture(e.pointerId);}renderAll();}
+});
+svg.addEventListener('pointermove',e=>{if(!drag||drag.pointerId!==e.pointerId)return;if(drag.type==='pan'){view={...drag.start,x:drag.start.x-(e.clientX-drag.cx)/drag.scale,y:drag.start.y-(e.clientY-drag.cy)/drag.scale};updateView();return;}const p=point(e),q=placements()[drag.id];q.xMm=snap(p.x-drag.dx);q.yMm=snap(p.y-drag.dy);renderCanvas();});
+function endDrag(e){if(!drag||drag.pointerId!==e.pointerId)return;const type=drag.type;drag=null;svg.classList.remove('is-panning');if(svg.hasPointerCapture(e.pointerId))svg.releasePointerCapture(e.pointerId);if(type==='item')commit();}
+svg.addEventListener('pointerup',endDrag);svg.addEventListener('pointercancel',endDrag);svg.addEventListener('lostpointercapture',endDrag);
+svg.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY>0?1.10:1/1.10,point(e));},{passive:false});
+$('catalog').addEventListener('click',e=>{const c=e.target.closest('[data-id]');if(c)select(c.dataset.id);});
+$('catalog').addEventListener('keydown',e=>{if(e.key==='Enter'){const c=e.target.closest('[data-id]');if(c)select(c.dataset.id);}});
+$('catalog').addEventListener('dragstart',e=>{const c=e.target.closest('[data-id]');if(!c)return;e.dataTransfer.setData('text/plain',c.dataset.id);e.dataTransfer.effectAllowed='move';});
+$('canvas-wrap').addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';});
+$('canvas-wrap').addEventListener('drop',e=>{e.preventDefault();const id=e.dataTransfer.getData('text/plain');if(item(id))place(id,point(e));});
+function add(kind='generic'){checkpoint();const f={id:uid(),number:Math.max(0,...project.furniture.map(f=>f.number))+1,name:kind==='zone'?'비워둘 공간':'새 가구',widthMm:kind==='zone'?900:null,depthMm:kind==='zone'?900:null,heightMm:null,kind,targetRoom:project.rooms[0]?.id||'',clearanceFrontMm:0,verified:false,excludeFromMove:false,source:kind==='zone'?'초기 표시 90 × 90cm, 직접 수정':'사용자 직접 입력',note:'',photo:null};project.furniture.push(f);selected=f.id;search='';$('search').value='';roomFilter='';$('room-filter').value='';commit();}
+$('add-item').onclick=()=>add();$('add-zone').onclick=()=>add('zone');
+$('search').oninput=e=>{search=e.target.value.trim();renderCatalog();};
+$('room-filter').innerHTML+='<option disabled>────────</option>'+project.rooms.map(r=>`<option value="${r.id}">${esc(roomName(r.id))}</option>`).join('');
+$('room-filter').onchange=e=>{roomFilter=e.target.value;renderCatalog();};
+for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>setMode(b.dataset.mode);
+for(const b of document.querySelectorAll('[data-scene]'))b.onclick=()=>{if(project.activeScene===b.dataset.scene)return;checkpoint();project.activeScene=b.dataset.scene;selected=null;commit();};
+$('clone-scene').onclick=()=>{const id=prompt('현재 배치를 복사할 안을 입력하세요: A, B, C\n대상 안의 배치는 덮어씁니다.','B')?.trim().toUpperCase();if(!id||id===project.activeScene)return;const target=project.scenes.find(s=>s.id===id);if(!target){notify('A, B, C 중 하나를 입력하세요.');return;}if(!confirm(`${project.activeScene}안을 ${id}안에 복사할까요? 기존 ${id}안 배치는 바뀝니다.`))return;checkpoint();target.placements=clone(placements());project.activeScene=id;commit();};
+$('fit').onclick=fit;$('zoom-in').onclick=()=>zoom(1/1.2);$('zoom-out').onclick=()=>zoom(1.2);
+$('focus').onclick=()=>{document.body.classList.toggle('focus-mode');$('focus').textContent=document.body.classList.contains('focus-mode')?'패널 보기':'크게 보기';};
+for(const id of ['show-labels','show-clearance','opacity'])$(id).oninput=renderCanvas;
+$('undo').onclick=undo;$('redo').onclick=redo;
+$('help-button').onclick=()=>$('help').showModal();$('close-help').onclick=()=>$('help').close();
+$('scale-checks-open').onclick=()=>{setMode('select');$('scale-checks-dialog').showModal();};
+$('scale-checks-close').onclick=()=>{setMode('select');$('scale-checks-dialog').close();};
+$('scale-checks-dialog').addEventListener('cancel',()=>setMode('select'));
+$('scale-checks-pick').onclick=()=>{$('scale-checks-dialog').close();setMode('crosscheck');};
+$('scale-check-form').onsubmit=e=>{
+ e.preventDefault();if(!checkDraft)return;
+ const line={id:uid(),kind:$('check-kind').value,pointsPx:checkDraft,lengthMm:Number($('check-length').value)*10,endpointReference:$('check-reference').value.trim(),source:$('check-source').value.trim(),status:$('check-status').value,toleranceMm:$('check-tolerance').value.trim()===''?null:Number($('check-tolerance').value)*10};
+ const next=clone(project);(next.background.validationLines ||= []).push(line);
+ try{validateProject(next);}catch(error){$('scale-check-error').textContent=error.message;return;}
+ checkpoint();project=next;setMode('select');commit();notify('비교선을 저장했습니다. 축척과 가구 치수·위치는 유지됩니다.');
+};
+$('scale-checks-list').onclick=e=>{const button=e.target.closest('[data-remove-check]');if(!button)return;checkpoint();project.background.validationLines=scaleLines().filter(line=>line.id!==button.dataset.removeCheck);commit();};
+$('reset').onclick=()=>{if(!confirm('도면과 모든 가구, A/B/C안, 공통 공간 객체를 빈 프로젝트로 되돌릴까요? 먼저 JSON으로 백업할 수 있습니다.'))return;checkpoint();project=clone(window.HOME_SEED);selected=null;setMode('select');fit();commit();$('help').close();};
+document.addEventListener('keydown',e=>{
+ if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||document.querySelector('dialog[open]'))return;
+ const cmd=e.metaKey||e.ctrlKey;
+ if(cmd&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();return;}
+ if(e.key==='Escape'){setMode('select');return;}
+ if(e.key.toLowerCase()==='r'){e.preventDefault();rotate();return;}
+ if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();unplace();return;}
+ const p=placements()[selected],d={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];
+ if(p&&d&&!p.locked){e.preventDefault();checkpoint();const step=(Number($('snap').value)||10)*(e.shiftKey?10:1);p.xMm+=d[0]*step;p.yMm+=d[1]*step;commit();}
+});
+function saveBlob(blob,name){const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+$('recover-storage').hidden = recoveryRaw === null;
+$('recover-storage').textContent = migrationRaw === null ? '복구용 원문 저장' : 'v1 이전 원문 저장';
+$('recover-storage').onclick=()=>{if(recoveryRaw!==null)saveBlob(new Blob([recoveryRaw],{type:'text/plain;charset=utf-8'}),'home-layout-unreadable.txt');};
+$('export-json').onclick=()=>{saveBlob(new Blob([JSON.stringify(project,null,2)],{type:'application/json'}),'home-layout-'+project.activeScene+'-v2.json');notify('사진과 가구 목록, A/B/C 배치와 공통 공간 데이터를 포함한 v2 JSON을 저장합니다.');};
+$('import-json').onclick=()=>$('json-file').click();
+$('json-file').onchange=async e=>{
+ const file=e.target.files[0];e.target.value='';if(!file)return;
+ const operation=++imageOperation,original=project;
+ try{
+  if(file.size>15000000)throw Error('15MB 이하 프로젝트만 불러올 수 있습니다.');
+  const raw=await file.text(),parsed=JSON.parse(raw),legacy=parsed?.schemaVersion===1,next=validateProject(parsed);
+  await verifyPlanImage(next.background);
+  if(operation!==imageOperation||original!==project)return;
+  if(!confirm((legacy?'v1 파일을 v2로 이전하고 원본 백업 파일을 저장합니다.\n':'')+'현재 프로젝트를 파일 내용으로 교체할까요? 되돌리기로 복구할 수 있습니다.'))return;
+  if(legacy)saveBlob(new Blob([raw],{type:'application/json'}),'home-layout-v1-before-upgrade.json');
+  checkpoint();project=next;selected=null;setMode('select');fit();commit();notify('도면, 가구, 배치안을 불러왔습니다.');
+ }catch(err){if(operation===imageOperation)notify('불러오기 실패: '+err.message);}
+};
+$('background-upload').onclick=()=>$('background-file').click();
+if($('background-empty-upload'))$('background-empty-upload').onclick=()=>$('background-file').click();
+$('background-file').onchange=async e=>{
+ const file=e.target.files[0];e.target.value='';if(!file)return;
+ const operation=++imageOperation,original=project;
+ if($('background-status'))$('background-status').textContent='도면 이미지를 읽는 중…';
+ try{
+  const background=await normalizePlan(file);
+  if(operation!==imageOperation||original!==project)return;
+  const existing=project.background.imageData||project.furniture.length||project.scenes.some(s=>Object.keys(s.placements).length)||['walls','fixedObstacles','doors','roomPolygons'].some(k=>project.geometry[k].length)||project.background.calibration||scaleLines().length;
+  if(existing&&!confirm('새 도면으로 교체할까요? 가구 치수와 사진은 유지하고 A/B/C의 모든 배치, 벽·설비·문·방 경계와 축척 기록은 지웁니다. 되돌리기로 복구할 수 있습니다.'))return;
+  const next=clone(project);next.background=background;next.rooms=workspaceRooms(background);next.geometry=clone(window.HOME_SEED.geometry);for(const scene of next.scenes)scene.placements={};
+  validateProject(next);checkpoint();project=next;selected=null;setMode('select');fit();commit();notify('도면을 올렸습니다. 알고 있는 길이로 축척을 보정하세요.');
+ }catch(err){if(operation===imageOperation)notify('도면 업로드 실패: '+err.message);}
+ finally{if(operation===imageOperation||project!==original)renderCanvas();}
+};
+$('photo-file').onchange=async e=>{const file=e.target.files[0],id=photoTarget;e.target.value='';if(!file)return;if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>20000000){notify('20MB 이하 JPG, PNG, WEBP 사진을 선택하세요.');return;}const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{try{const c=document.createElement('canvas'),scale=Math.min(1,640/Math.max(img.width,img.height));c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);const ctx=c.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);const f=item(id);if(f){checkpoint();f.photo=c.toDataURL('image/jpeg',.78);commit();notify('식별용 사진을 이 프로젝트에 저장했습니다. 외부로 전송하지 않습니다.');}}finally{URL.revokeObjectURL(url);}};img.onerror=()=>{URL.revokeObjectURL(url);notify('사진을 읽지 못했습니다.');};img.src=url;};
+$('export-options').onclick=()=>$('export-options-dialog').showModal();
+$('export-options-close').onclick=()=>$('export-options-dialog').close();
+function exportSnapshot() {
+ const options={gaps:$('export-gaps').checked,unknowns:$('export-unknowns').checked,confirmed:$('export-confirmed').checked,callouts:$('export-callouts').checked,nearLabels:true,a4:$('export-a4')?.checked!==false};
+ const snapshot=clone(project),gaps={};
+ let content=svgContent(true);
+ if(options.gaps)for(const f of snapshot.furniture.filter(f=>placements()[f.id]&&!f.excludeFromMove)) {
+  const gap=nearestGap(f.id),text=gap.state==='overlap'?'본체 겹침 · 0cm (간격 없음)':gapValue(gap);gaps[f.id]={...gap,text};
+  if(hasBody(f)&&gap.from&&gap.to) {
+   const [a,b]=[gap.from,gap.to];
+   content+=`<g class="export-gap" data-id="${esc(f.id)}" data-state="${gap.state}"><line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#125e78" stroke-width="22" stroke-dasharray="45 25"/><text x="${(a[0]+b[0])/2}" y="${(a[1]+b[1])/2-70}" text-anchor="middle" font-size="140" fill="#125e78" stroke="white" stroke-width="28" paint-order="stroke">${esc(f.number+' · '+text)}</text></g>`;
+  }
+ }
+ const probe=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ probe.setAttribute('font-family','sans-serif');
+ probe.style.cssText='position:fixed;left:-10000px;top:0;width:2200px;height:1800px;visibility:hidden;pointer-events:none';
+ probe.innerHTML=content;document.body.appendChild(probe);
+ let bounds;
+ try {
+  const box=probe.getBBox(),{w,h}=world(),pad=150;
+  const x=Math.min(0,box.x)-pad,y=Math.min(0,box.y)-pad;
+  bounds={x,y,w:Math.max(w,box.x+box.width)+pad-x,h:Math.max(h,box.y+box.height)+pad-y};
+ } finally {probe.remove();}
+ const pageWidth=options.a4?window.HOME_EXPORT_REPORT.a4Width:2200,pageHeight=options.a4?window.HOME_EXPORT_REPORT.a4Height:1800;
+ const maxMapWidth=options.callouts?(options.a4?window.HOME_EXPORT_CALLOUTS.mapMaxWidthFor(pageWidth):window.HOME_EXPORT_CALLOUTS.mapMaxWidth):pageWidth;
+ const factor=Math.min(maxMapWidth/bounds.w,(pageHeight-(options.a4?144:0))/bounds.h),mapWidth=Math.max(1,Math.round(bounds.w*factor)),mapHeight=Math.max(1,Math.round(bounds.h*factor));
+ const text=`<svg xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" width="${mapWidth}" height="${mapHeight}" viewBox="${bounds.x} ${bounds.y} ${bounds.w} ${bounds.h}">${content}</svg>`;
+ return {options,bounds,mapWidth,mapHeight,geometry:{bounds,mapWidth,mapHeight},text,report:window.HOME_EXPORT_REPORT.model(snapshot,options,gaps)};
+}
+$('export-png').onclick=async()=>{
+ const button=$('export-png');button.disabled=true;
+ let url;
+ try {
+  // Capture every project/option/render input synchronously before image decoding can yield.
+  const snapshot=exportSnapshot(),canvas=document.createElement('canvas'),context=canvas.getContext('2d');
+  if(!context)throw Error('PNG 캔버스를 만들 수 없습니다.');
+  const page=snapshot.options.a4?window.HOME_EXPORT_REPORT.layoutA4(context,snapshot.report,snapshot.mapHeight,snapshot.geometry):window.HOME_EXPORT_REPORT.layout(context,snapshot.report,snapshot.mapHeight,snapshot.geometry);
+  canvas.width=page.width;canvas.height=page.height;
+  snapshot.text=window.HOME_EXPORT_CALLOUTS.prepareSvg(snapshot.text,page.callouts);
+  url=URL.createObjectURL(new Blob([snapshot.text],{type:'image/svg+xml;charset=utf-8'}));
+  const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(Error('도면 이미지 변환 실패'));i.src=url;});
+  window.HOME_EXPORT_REPORT.draw(context,page,img);
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+  if(!blob)throw Error('PNG 생성 실패: 브라우저 캔버스 크기/메모리 제한을 확인하세요. 내용은 잘라서 저장하지 않았습니다.');
+  saveBlob(blob,`home-layout-${snapshot.report.sceneId}${snapshot.options.a4?'-a4':''}.png`);notify(snapshot.options.a4?'A4 가로 도면 중심 PNG를 저장합니다.':'상세 도면 보고서 PNG를 저장합니다. 개인 배치 JSON도 별도로 보관하세요.');
+ } catch(e) {notify(e.message);} finally {if(url)URL.revokeObjectURL(url);button.disabled=false;$('export-confirmed').checked=false;}
+};
+// Flush pending autosave on page exit where the browser permits storage.
+window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);writeProject();});
+window.__layoutLab={getProject:()=>clone(project),getErrors:()=>clone(errors),corners,overlaps,getView:()=>({...view}),nearestGap,exportSnapshot,place,select,rotate,undo,redo};
+fit();renderAll();persist();
+})();
+
+</script></body></html>

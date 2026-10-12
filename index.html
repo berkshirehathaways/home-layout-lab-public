@@ -1,0 +1,93 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="도면과 가구를 직접 등록해 배치를 시험하는 브라우저 기반 2D 도구"><title>Home Layout Lab</title><link rel="stylesheet" href="src/style.css"></head><body>
+<header><div class="brand"><div class="brand-mark">HL</div><div><h1>Home Layout Lab</h1><div class="subtitle">도면과 가구를 직접 등록해 배치를 시험하세요.</div></div></div><div class="actions"><span id="save-state" role="status">로컬 저장 준비</span><button id="recover-storage" hidden>복구용 원문 저장</button><button id="background-upload">도면 올리기</button><button id="undo" title="Ctrl/Cmd+Z">↶</button><button id="redo" title="Ctrl/Cmd+Shift+Z">↷</button><button id="export-json">배치 파일 저장</button><button id="import-json">불러오기</button><button id="export-options">PNG 출력 옵션</button><button id="export-png" class="primary">도면 PNG</button><button id="help-button">사용법</button></div></header>
+<div class="top-note"><span><b>사용자 입력 기반 2D 도구</b> | 도면·치수·가구는 직접 등록하고 브라우저에 저장합니다.</span><span>등록 벽·설비·문 열림: 입력 기준 검사 | 미등록 대상·반입 동선 미검증</span></div>
+<main class="workspace"><aside class="sidebar"><div class="section-head"><h2>가구 목록</h2><span id="inventory-count" class="small"></span></div><input id="search" type="search" placeholder="가구 이름 검색" aria-label="가구 검색"><select id="room-filter" aria-label="희망 공간 필터" style="margin-top:7px"><option value="">모든 방</option></select><div class="small" style="margin-top:8px">카드를 도면으로 드래그하거나, 선택 후 ‘도면에 놓기’</div><div id="catalog" class="catalog"></div><button class="catalog-add" id="add-item">＋ 가구 추가</button><button class="catalog-add" id="add-zone">＋ 비워둘 공간 표시</button><div class="help"><b>시작 순서</b><br>1. 도면 올리기<br>2. 축척 맞추기<br>3. 가구와 사진 등록<br><br>모든 입력과 사진은 이 브라우저에만 저장됩니다.</div></aside>
+<section class="canvas-area"><div class="toolbar"><div class="toolgroup scene-tabs"><button data-scene="A" class="active">A</button><button data-scene="B">B</button><button data-scene="C">C</button><button id="clone-scene" title="현재 배치를 다른 안으로 복사">안 복사</button></div><div class="toolgroup"><button data-mode="select" class="active">선택</button><button data-mode="pan" title="가구 위에서도 드래그해 전체 도면 이동">화면 이동</button><button data-mode="measure">거리 재기</button><button data-mode="calibrate">축척 맞추기</button><button id="scale-checks-open">축척 비교</button><button id="geometry-open">벽·고정 설비</button><button id="doors-open">문 열림</button><button id="rooms-open">방 경계</button></div><div class="toolgroup"><button id="zoom-out">−</button><button id="fit" title="원본 도면 전체를 화면 가운데 맞추기">전체 맞춤</button><button id="zoom-in">＋</button><button id="focus">크게 보기</button></div></div>
+<div id="onboarding" class="info onboarding"><b>내 도면으로 시작</b><br><span id="background-status">도면 없음 · 이미지를 올려 시작하세요.</span><br><button id="background-empty-upload" type="button" class="primary">도면 올리기</button></div><div class="canvas-wrap" id="canvas-wrap"><svg id="plan" class="mode-select" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="가구를 드래그해 배치하는 평면도"></svg><div class="canvas-caption" id="canvas-caption"><b>A | 시작안</b>도면을 올리고, 가구를 등록해 배치해 보세요.</div></div><div class="canvas-settings"><label><input id="hide-notes" type="checkbox" checked> 방 안 원문 메모 가리기</label><label><input id="show-labels" type="checkbox" checked> 방 이름</label><label><input id="show-clearance" type="checkbox" checked> 사용 여유 공간</label><label>도면 농도 <input id="opacity" type="range" min="20" max="100" value="68"></label><label>격자 <select id="snap"><option value="10">1cm</option><option value="50">5cm</option><option value="100">10cm</option><option value="0">없음</option></select></label></div><div class="canvas-status"><span id="status">준비 중</span><span>R 회전 | 방향키 이동 | Delete 배치 해제</span></div></section>
+<aside class="sidebar inspector"><p class="small">배치 파일 형식 v2 · 집 구조는 A/B/C 공통</p><p id="geometry-status" class="info warning"></p><div id="inspector"></div><div class="help"><h3>현재 안 점검</h3><div id="warnings" class="warning-list"></div><p class="rule">등록한 가구와 검사 활성화된 벽·고정 설비의 본체 겹침 및 앞·뒤·좌·우 사용 여유, 등록한 여닫이문의 회전 영역을 점검합니다. 사용 여유끼리의 겹침은 본체 충돌로 계산하지 않습니다. 미등록·치수 미확인·검사 제외 대상과 미등록 문·미닫이문·창·복도·반입 동선은 미검증입니다. 경고 0도 설치 보증이 아닙니다.</p></div></aside></main>
+<div class="toast" id="toast" role="status"></div><input id="background-file" type="file" accept="image/jpeg,image/png,image/webp" hidden><input id="json-file" type="file" accept=".json,application/json" hidden><input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+<dialog id="export-options-dialog" aria-labelledby="export-options-title">
+<div class="section-head"><h2 id="export-options-title">PNG 출력 옵션</h2><button id="export-options-close" type="button">닫기</button></div>
+<p>‘도면 PNG’는 기본으로 A4 가로 용지에 도면과 아이템 식별 정보만 저장합니다. 이 옵션은 개인 배치 JSON에 저장되지 않습니다.</p>
+<label><input id="export-a4" type="checkbox" checked> A4 도면 중심 출력 (해제하면 기존 상세 보고서)</label>
+<label><input id="export-callouts" type="checkbox" checked> 가구 이름·치수 표시 (안에 들어가면 직접 표시, 작거나 좁으면 바깥 범례로 연결)</label>
+<label><input id="export-gaps" type="checkbox"> 가구별 최단 벽/고정 설비 간격 포함 (통로 폭 아님)</label>
+<label><input id="export-unknowns" type="checkbox" checked> 미확정·미배치 상세 목록 포함</label>
+<label><input id="export-confirmed" type="checkbox"> 이번 PNG의 선택한 위치만 사용자 확정 배치로 표시 (치수·안전 확인 아님)</label>
+<p class="info warning">확정 표시는 배치/프로젝트 변경과 PNG 출력 후 해제됩니다. 옵션과 무관하게 벽·문·통로·높이·실측의 미검증 안내는 출력됩니다.</p>
+<p>앱/Git 파일은 프로그램입니다. 실제 개인 배치·사진·A/B/C안·공통 공간과 출처는 ‘배치 파일 저장’의 JSON으로 별도 백업하세요. PNG는 그림이며 배치를 복원할 수 없습니다. 외부 전송 없이 이 기기에 저장합니다.</p>
+</dialog>
+<dialog id="help"><h2>먼저 움직여 보세요</h2><p><b>1.</b> 왼쪽 가구를 도면으로 끌어놓습니다. 이미 배치된 가구 카드를 끌면 같은 가구의 위치를 바꿉니다.</p><p><b>2.</b> 가구를 선택하면 오른쪽에서 치수와 사진을 수정할 수 있습니다. 입력 단위는 cm, 저장 단위는 mm입니다. 모서리를 잡아 임의로 늘리는 기능은 없습니다.</p><p><b>3.</b> <span class="shortcut">R</span> 90° 회전, <span class="shortcut">방향키</span> 격자 단위 이동, <span class="shortcut">Shift+방향키</span> 10배 이동. 마우스 휠로 확대하고 빈 도면을 드래그해 화면을 이동합니다. 가구 위에서는 ‘화면 이동’ 또는 Alt+드래그를 사용하세요. ‘전체 맞춤’으로 도면을 가운데 정렬합니다.</p><p><b>4.</b> A/B/C는 가구 목록을 공유하는 다른 배치입니다. 치수를 고치면 모든 안에 적용됩니다. C는 빈 도면에서 시작합니다.</p><p><b>5.</b> 축척 맞추기: 도면에서 길이를 아는 두 끝점을 누르고 실제 길이를 cm로 입력합니다. 축척은 단일 비율이므로 원근이 있는 사진에 적용하면 안 됩니다. 수직 치수도 따로 대조하세요.</p><p><b>저장:</b> 자동 저장은 이 브라우저에만 남습니다. 파일을 옮기거나 브라우저 데이터를 지우기 전에 ‘배치 파일 저장’으로 JSON을 보관하세요. 다른 기기와 자동으로 동기화하지 않습니다.</p><p><b>출력과 백업:</b> PNG는 전달용 그림입니다. 앱/Git 파일과 개인 배치 데이터는 별개이며, 개인 배치·사진·A/B/C안·공통 공간·출처는 JSON으로 별도 백업하세요. PNG 출력 옵션에서 간격·미확정 목록과 이번 PNG의 위치 확정 여부를 선택할 수 있습니다.</p><p><b>범위:</b> 가구 본체는 직사각형입니다. 매트 겹침은 물리 충돌 대신 놀이공간 점유로 표시합니다. 등록·활성화한 벽 구간과 치수가 있는 고정 설비는 가구 본체와의 겹침을 검사합니다. 등록한 여닫이문의 회전 영역은 가구·고정 설비와 검사합니다. 숨겨도 검사는 유지됩니다. 경계 접촉과 0.5mm 이하 겹침은 알리지 않습니다. 치수가 없거나 검사에서 제외된 대상, 미등록 문·미닫이문·손잡이·높이·창·복도·반입 동선은 미검증입니다. 편집 중 벽을 가로질러 이동할 수 있고 놓은 위치의 경고는 남습니다. 실물 반입 시뮬레이션이나 설치 보증이 아닙니다.</p><div class="row" style="margin-top:16px"><button id="close-help" class="primary">시작하기</button><button id="reset" class="danger">초기 상태로 되돌리기</button></div></dialog>
+<dialog id="scale-checks-dialog" aria-labelledby="scale-checks-title">
+<div class="section-head"><h2 id="scale-checks-title">원본 도면 축척 비교</h2><button id="scale-checks-close" type="button">닫기</button></div>
+<p id="scale-checks-summary" role="status"></p>
+<p class="info warning">가로·세로·다른 방 구간을 같은 끝점 기준으로 대조하세요. 세 구간이 일치해도 현장 실측 확정이나 반입·설치 보증이 아닙니다.</p>
+<div id="scale-checks-list"></div>
+<button id="scale-checks-pick" type="button">도면에서 두 점 선택</button>
+<form id="scale-check-form" hidden>
+<p id="scale-check-error" role="alert"></p>
+<div class="field-grid"><div><label for="check-kind">구간</label><select id="check-kind"><option value="horizontal">가로</option><option value="vertical">세로</option><option value="other-room">다른 방</option></select></div><div><label for="check-length">알려진 길이 (cm)</label><input id="check-length" type="number" min=".1" max="10000" step=".1" required></div></div>
+<label for="check-reference">끝점 기준 (모르면 비워 두세요)</label><input id="check-reference" maxlength="500" placeholder="예: 마감 내측 벽면 사이">
+<label for="check-source">원본 출처 / 측정 근거</label><input id="check-source" maxlength="500" placeholder="예: 원본 도면 치수선, 현장 실측 날짜">
+<div class="field-grid"><div><label for="check-tolerance">허용 오차 (cm, 직접 정함)</label><input id="check-tolerance" type="number" min="0" max="10000" step=".1" placeholder="확인 전"></div><div><label for="check-status">확인 상태</label><select id="check-status"><option value="unconfirmed">확인 전</option><option value="confirmed">출처 확인</option></select></div></div>
+<p class="small">허용 오차를 비우면 미확인으로 보존합니다. 비교선 저장은 축척과 가구 위치·크기를 바꾸지 않습니다.</p>
+<button id="scale-check-save" class="primary" type="submit">비교선 저장</button>
+</form>
+</dialog>
+<dialog id="geometry-dialog" aria-labelledby="geometry-title">
+<div class="section-head"><h2 id="geometry-title">벽·고정 설비 · A/B/C 공통</h2><button id="geometry-close" type="button">닫기</button></div>
+<p class="info warning">검사 활성화된 벽·고정 설비와 가구 본체의 겹침을 입력 기준으로 검사합니다. 표시를 등록한 여닫이문의 회전 영역은 가구·고정 설비와 검사합니다. 숨겨도 검사는 유지됩니다. 치수 미확인 설비는 검사 미완료, 비활성화한 객체는 검사 제외입니다. 등록한 문 열림은 별도 ‘문 열림’ 화면에서 관리합니다. 미등록 문·미닫이문·설비 사용 공간·복도·반입 동선은 미검증이며 설치 보증이 아닙니다.</p>
+<div id="geometry-list"></div><div class="row"><button id="obstacle-new" type="button">＋ 고정 사각형 추가</button><button id="wall-new" type="button">＋ 벽 구간 추가</button></div>
+<p id="geometry-error" role="alert"></p>
+<form id="geometry-form" hidden novalidate>
+<p id="geometry-form-state" role="status"></p>
+<label for="g-name">이름</label><input id="g-name" required>
+<div id="obstacle-fields">
+<div class="field-grid"><div><label for="g-x">중심 X (cm)</label><input id="g-x" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-y">중심 Y (cm)</label><input id="g-y" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-width">폭 (cm, 모르면 빈 값)</label><input id="g-width" type="number" step="any" max="5000" placeholder="확인 필요"></div><div><label for="g-depth">깊이 (cm, 모르면 빈 값)</label><input id="g-depth" type="number" step="any" max="5000" placeholder="확인 필요"></div></div>
+<p class="small">좌표는 도면 좌상단 기준입니다. 폭/깊이가 없으면 본체 검증 불가로 표시하고 중심만 그립니다.</p>
+<label for="g-rotation">회전</label><select id="g-rotation"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select>
+</div>
+<div id="wall-fields" hidden>
+<p class="info">벽 중심선의 두 끝점과 두께를 입력하세요. 끝은 입력한 끝점에서 평평하게 끝납니다. 수평·수직 벽만 지원합니다. 문 입구는 벽을 두 구간으로 나누고 그 사이에 실제 빈 간격을 남겨 표현하세요.</p>
+<div class="field-grid"><div><label for="g-x1">시작 X (cm)</label><input id="g-x1" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-y1">시작 Y (cm)</label><input id="g-y1" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-x2">끝 X (cm)</label><input id="g-x2" type="number" step="any" min="-100000" max="100000" required></div><div><label for="g-y2">끝 Y (cm)</label><input id="g-y2" type="number" step="any" min="-100000" max="100000" required></div></div>
+<label for="g-thickness">벽 두께 (cm, 필수)</label><input id="g-thickness" type="number" step="any" max="5000" required placeholder="실제 두께 확인 필요">
+</div>
+<label for="g-source">출처 / 측정 근거</label><input id="g-source" placeholder="예: 원본 도면 치수선, 현장 실측 날짜">
+<label for="g-verification">확인 상태</label><select id="g-verification"><option value="unconfirmed">확인 전</option><option value="plan-observed">도면 확인</option><option value="field-measured">현장 실측 (출처 필수)</option></select>
+<label><input id="g-visible" type="checkbox"> 화면 표시</label><label><input id="g-check" type="checkbox"> 가구 본체와 겹침 검사 활성화</label>
+<div class="row"><button id="g-save" class="primary" type="submit">저장</button><button id="g-lock" type="button">잠금</button><button id="g-delete" class="danger" type="button">삭제</button></div>
+</form>
+</dialog>
+<dialog id="doors-dialog" aria-labelledby="doors-title">
+<div class="section-head"><h2 id="doors-title">여닫이문 · A/B/C 공통</h2><button id="doors-close" type="button">닫기</button></div>
+<p class="info warning">등록한 문짝의 회전 영역만 입력 기준으로 검사합니다. 미등록 문·미닫이문·손잡이·높이·반입 경로는 미검증입니다. 문을 추가해도 벽을 자동으로 자르지 않습니다.</p>
+<p class="small">보라 실선: 닫힌 문 / 초록 점선: 열린 문 / 보라 면: 지나가는 영역 (바깥 근사 최대 0.5mm)</p>
+<div id="doors-list"></div><button id="door-new" type="button">＋ 여닫이문 추가</button>
+<p id="door-error" role="alert"></p>
+<form id="door-form" hidden novalidate><p id="door-state" role="status"></p>
+<label for="d-name">문 이름</label><input id="d-name" required>
+<div class="field-grid"><div><label for="d-x">경첩 X (cm)</label><input id="d-x" type="number" step="any" required></div><div><label for="d-y">경첩 Y (cm)</label><input id="d-y" type="number" step="any" required></div><div><label for="d-width">문짝 폭 (cm, 필수)</label><input id="d-width" type="number" step="any" required></div><div><label for="d-opening">개방각 (1~90도)</label><input id="d-opening" type="number" min="1" max="90" step="any" required></div></div>
+<label for="d-closed">닫힌 문짝 방향</label><select id="d-closed"><option value="0">오른쪽 (0°)</option><option value="90">아래 (90°)</option><option value="180">왼쪽 (180°)</option><option value="270">위 (270°)</option></select>
+<label for="d-direction">화면에서 여는 방향</label><select id="d-direction"><option value="cw">시계 방향</option><option value="ccw">반시계 방향</option></select>
+<p class="info">입구는 같은 중심선 위 두 벽 사이 빈 간격입니다. 경첩과 닫힌 문 끝점이 그 양 끝과 맞아야 연결로 표시합니다. 실제 문틀 기준은 별도 확인하세요.</p>
+<div class="field-grid"><div><label for="d-wall-a">입구 옆 벽 1</label><select id="d-wall-a"></select></div><div><label for="d-wall-b">입구 옆 벽 2</label><select id="d-wall-b"></select></div></div>
+<label for="d-source">출처 / 측정 근거</label><input id="d-source">
+<label for="d-verification">확인 상태</label><select id="d-verification"><option value="unconfirmed">확인 전</option><option value="plan-observed">도면 관찰</option><option value="field-measured">현장 실측 (출처 필수)</option></select>
+<label><input id="d-visible" type="checkbox"> 화면 표시</label><label><input id="d-check" type="checkbox"> 회전 영역 검사 활성화</label>
+<div class="row"><button id="d-save" type="submit" class="primary">문 저장</button><button id="d-lock" type="button">잠금</button><button id="d-delete" type="button" class="danger">삭제</button></div></form>
+</dialog>
+<dialog id="rooms-dialog" aria-labelledby="rooms-title">
+<div class="section-head"><h2 id="rooms-title">방 경계 · A/B/C 공통</h2><button id="rooms-close" type="button">닫기</button></div>
+<p class="info warning">볼록한 마감 내측 경계만 지원합니다. 오목·교차 경계는 검증 불가입니다. 희망 방이 지정된 가구의 전체 본체를 검사하며 방 이름/희망 위치는 경계로 사용하지 않습니다.</p>
+<div id="rooms-list"></div><div class="row"><button id="room-new" type="button">＋ 방 경계 추가</button><button id="room-review-open" type="button">검토 초안 추가</button><input id="room-review-file" type="file" accept=".json,application/json" hidden></div><p class="small">방별 초안 JSON의 기하만 추가합니다. 같은 ID/방 경계가 있거나 축척이 다르면 기존 작업을 유지하고 거부합니다.</p><p id="room-error" role="alert"></p>
+<form id="room-form" hidden novalidate><p id="room-state" role="status"></p>
+<label for="r-name">경계 이름</label><input id="r-name" required>
+<label for="r-room">대상 방</label><select id="r-room"></select>
+<label for="r-points">꼭짓점 목록 (한 줄에 X, Y cm)</label><textarea id="r-points" rows="6" placeholder="100, 100&#10;400, 100&#10;400, 400&#10;100, 400" required></textarea>
+<p class="small">외곽 순서대로 3~64개를 입력하세요. 마지막 점은 첫 점에 자동 연결됩니다. 시작점을 반복하지 마세요. 경계 접촉과 바깥 0.5mm 이내는 포함으로 취급합니다.</p>
+<label for="r-source">출처 / 측정 근거</label><textarea id="r-source" rows="3"></textarea>
+<label for="r-verification">확인 상태</label><select id="r-verification"><option value="unconfirmed">확인 전</option><option value="plan-observed">도면 관찰</option><option value="field-measured">현장 실측 (출처 필수)</option></select>
+<label><input id="r-visible" type="checkbox"> 화면 표시</label><label><input id="r-check" type="checkbox"> 희망 방 전체 본체 포함 검사 활성화</label>
+<div class="row"><button id="r-save" type="submit" class="primary">경계 저장</button><button id="r-lock" type="button">잠금</button><button id="r-delete" type="button" class="danger">삭제</button></div></form>
+</dialog>
+<script src="src/seed.js"></script><script src="src/door-swing.js"></script><script src="src/room-boundary.js"></script><script src="src/geometry.js"></script><script src="src/room-review.js"></script><script src="src/geometry-editor.js"></script><script src="src/door-editor.js"></script><script src="src/room-editor.js"></script><script src="src/clearance.js"></script><script src="src/export-callouts.js"></script><script src="src/export-report.js"></script><script src="src/app.js"></script></body></html>
