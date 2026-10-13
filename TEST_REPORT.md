@@ -1,5 +1,10 @@
 # Public template test report
 
+## 2026-10-13 README localhost link
+
+- Corrected the bare localhost URL followed by Korean text to an explicit Markdown link on a separate line.
+- PASS: GitHub Markdown renderer returned `<a href="http://127.0.0.1:8765/">`; the Korean prose is outside the link. Privacy scan and `git diff --check` also passed.
+
 ## 2026-10-12 initial preparation
 
 - `python3 build.py` -> PASS; generated `standalone.html`.

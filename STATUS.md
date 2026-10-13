@@ -1,5 +1,12 @@
 # Public template status
 
+## 2026-10-13 README localhost link correction
+
+- task: README-LOCAL-URL
+- state: DONE
+- change: Explicit Markdown link on its own line; Korean prose is separate from the URL.
+- verification: GitHub Markdown renderer returned the exact localhost href; generic privacy scan and diff check passed.
+
 - task: PUBLIC-FORK-TEMPLATE
 - state: READY_TO_PUBLISH
 - goal: Empty, independent editor with user-supplied plans and furniture, safe to publish with fresh Git history.

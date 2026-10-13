@@ -24,7 +24,11 @@ GitHub 저장소의 **Settings → Pages → Deploy from a branch → main / (ro
 python3 -m http.server 8765 --bind 127.0.0.1
 ~~~
 
-브라우저에서 http://127.0.0.1:8765/를 엽니다. 종료는 Control+C입니다.
+프로젝트 폴더에서 위 명령을 실행한 뒤, 브라우저 주소창에 아래 주소를 입력하거나 링크를 클릭하세요.
+
+[http://127.0.0.1:8765/](http://127.0.0.1:8765/)
+
+서버를 종료하려면 실행 중인 터미널에서 Control+C를 누르세요.
 
 ## 저장과 개인정보
 
